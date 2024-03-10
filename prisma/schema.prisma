@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id         String   @id
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  users User[]
+
+  @@map("roles")
+}
+
+model User {
+  id           String     @id
+  name         String
+  email        String     @unique
+  gender       UserGender
+  cpf          String     @unique
+  picture_url  String
+  phone_number String
+  role         Role       @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  role_id      String
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now()) @updatedAt
+
+  addresses              Address[]
+  comments               Comment[]
+  favoriteEstablishments FavoriteEstablishment[]
+
+  @@map("users")
+}
+
+model EstablishmentCategory {
+  id          String   @id
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+
+  establishments Establishment[]
+
+  @@map("establishment_categories")
+}
+
+model Establishment {
+  id           String                @id
+  name         String
+  cnpj         String                @unique
+  description  String
+  opening_time DateTime              @db.Time()
+  closing_time DateTime              @db.Time()
+  opened       Boolean
+  picture_url  String
+  category     EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  category_id  String
+  created_at   DateTime              @default(now())
+  updated_at   DateTime              @default(now()) @updatedAt
+
+  address                Address?
+  comments               Comment[]
+  favoriteEstablishments FavoriteEstablishment[]
+  establishmentContacts  EstablishmentContact[]
+
+  @@map("establishments")
+}
+
+model EstablishmentContact {
+  id               String        @id
+  phone_number     String
+  email            String        @unique
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment_id String
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @default(now()) @updatedAt
+
+  @@map("establishment_contacts")
+}
+
+model Address {
+  id               String        @id
+  city             String
+  street           String
+  number           Int
+  neighborhood     String
+  complement       String
+  zip_code         String
+  user             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_id          String
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment_id String        @unique
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @default(now()) @updatedAt
+
+  @@map("addresses")
+}
+
+model Comment {
+  id               String        @id
+  evaluation_note  Int
+  description      String
+  user             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_id          String
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment_id String
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @default(now()) @updatedAt
+
+  @@map("comments")
+}
+
+model FavoriteEstablishment {
+  id               String        @id
+  user             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_id          String
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment_id String
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @default(now()) @updatedAt
+
+  @@map("favorite_establishments")
+}
+
+enum UserGender {
+  male
+  female
+}
