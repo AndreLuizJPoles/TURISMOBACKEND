@@ -6,6 +6,7 @@ export interface IUserEntity {
   email: string;
   gender: IUserGender;
   cpf: string;
+  password: string;
   picture_url: string;
   phone_number: string;
   created_at: Date;

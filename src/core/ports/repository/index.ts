@@ -1,2 +1,2 @@
-export * from "./default.repository";
-export * from "./user.repository";
+export * from "./defaultRepository.port";
+export * from "./userRepository.port";

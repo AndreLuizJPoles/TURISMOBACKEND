@@ -1,13 +1,9 @@
 import { IUserEntity } from "../../entities";
-import { IUserRepositoryPort } from "../../ports/repository/user.repository";
-import {
-  IHttpResponse,
-  IUpdateUserRepositoryDataIn,
-  IUpdateUserServiceDataIn,
-} from "../../types";
+import { IUserRepositoryPort } from "../../ports/repository";
+import { IHttpResponse, IUpdateUserServiceDataIn } from "../../types";
 import { HttpResponseUtils } from "../../utils/httpResponse.utils";
 import { IDefaultUseCase } from "../default.usecase";
-
+import zod from "zod";
 export class UpdateUserUseCase
   implements IDefaultUseCase<IHttpResponse, IUpdateUserServiceDataIn>
 {
@@ -15,8 +11,26 @@ export class UpdateUserUseCase
 
   async execute(
     data: IUpdateUserServiceDataIn
-  ): Promise<IHttpResponse<IUserEntity[]>> {
+  ): Promise<IHttpResponse<IUserEntity>> {
     try {
+      const userSchema = zod.object({
+        id: zod.string().uuid("O ID informado não é válido."),
+        name: zod.string().optional(),
+        gender: zod
+          .enum(["male", "female"], {
+            description: "Escolha masculino ou feminino.",
+          })
+          .optional(),
+        cpf: zod
+          .string()
+          .length(11, "O CPF digitado não possui 11 caracteres.")
+          .optional(),
+        picture_url: zod.string().optional(),
+        phone_number: zod.string().optional(),
+      });
+
+      userSchema.parse(data);
+
       const { id, ...userDataIn } = data;
 
       const user = await this.userRepositoryPort.update(id, userDataIn);
@@ -26,7 +40,7 @@ export class UpdateUserUseCase
       }
 
       return HttpResponseUtils.okResponse(user);
-    } catch (error) {
+    } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }
   }

@@ -1,5 +1,5 @@
 import { IUserEntity } from "../../entities";
-import { IUserRepositoryPort } from "../../ports/repository/user.repository";
+import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse } from "../../types";
 import { HttpResponseUtils } from "../../utils/httpResponse.utils";
 import { IDefaultUseCase } from "../default.usecase";
@@ -16,7 +16,7 @@ export class GetAllUsersUseCase implements IDefaultUseCase<IHttpResponse> {
       }
 
       return HttpResponseUtils.okResponse(users);
-    } catch (error) {
+    } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }
   }

@@ -1,24 +1,29 @@
 import { IUserEntity } from "../../entities";
-import { IUserRepositoryPort } from "../../ports/repository/user.repository";
+import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse } from "../../types";
 import { HttpResponseUtils } from "../../utils/httpResponse.utils";
 import { IDefaultUseCase } from "../default.usecase";
+import zod from "zod";
 
-export class GetUserByIdUseCase
+export class GetUserByEmailUseCase
   implements IDefaultUseCase<IHttpResponse, string>
 {
   constructor(private userRepositoryPort: IUserRepositoryPort) {}
 
-  async execute(id: string): Promise<IHttpResponse<IUserEntity>> {
+  async execute(email: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const user = await this.userRepositoryPort.getById(id);
+      const userSchema = zod.string().email("O email digitado não é válido.");
+
+      userSchema.parse(email)
+
+      const user = await this.userRepositoryPort.getByEmail(email);
 
       if (!user) {
         return HttpResponseUtils.notFoundResponse();
       }
 
       return HttpResponseUtils.okResponse(user);
-    } catch (error) {
+    } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }
   }
