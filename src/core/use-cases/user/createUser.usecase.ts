@@ -1,4 +1,5 @@
 import { IUserEntity } from "../../entities";
+import { IPasswordHashPort } from "../../ports";
 import { IUserRepositoryPort } from "../../ports/repository";
 import {
   IHttpResponse,
@@ -13,7 +14,10 @@ import zod from "zod";
 export class CreateUserUseCase
   implements IDefaultUseCase<IHttpResponse, ICreateUserServiceDataIn>
 {
-  constructor(private userRepositoryPort: IUserRepositoryPort) {}
+  constructor(
+    private userRepositoryPort: IUserRepositoryPort,
+    private passwordHashPort: IPasswordHashPort
+  ) {}
 
   async execute(
     data: ICreateUserServiceDataIn
@@ -38,9 +42,11 @@ export class CreateUserUseCase
       userSchema.parse(data);
 
       const id = crypto.randomUUID();
+      const hashed_password = await this.passwordHashPort.hash(data.password);
 
       const user_repository_data: ICreateUserRepositoryDataIn = {
         ...data,
+        password: hashed_password,
         id,
       };
 
