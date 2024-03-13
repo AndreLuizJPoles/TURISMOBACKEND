@@ -1,1 +1,1 @@
-export * from './user.repository.ts'
+export * from "./userRepository.adapter";

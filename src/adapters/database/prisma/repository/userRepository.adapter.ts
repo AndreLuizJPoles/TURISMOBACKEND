@@ -6,7 +6,7 @@ import {
 } from "../../../../core/types";
 import { prismaClient } from "../prismaClientConfiguration";
 
-export class UserRepository implements IUserRepositoryPort {
+export class UserRepositoryAdapter implements IUserRepositoryPort {
   async getByEmail(email: string): Promise<IUserEntity | null> {
     try {
       const user = await prismaClient.user.findUnique({
