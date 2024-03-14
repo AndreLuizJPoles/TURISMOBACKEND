@@ -1,4 +1,5 @@
 import { IUserEntity } from "../../entities";
+import { IUserFieldsValidationPort } from "../../ports/fieldsValidation";
 import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse, IUpdateUserServiceDataIn } from "../../types";
 import { excludeFields } from "../../utils";
@@ -8,29 +9,16 @@ import zod from "zod";
 export class UpdateUserUseCase
   implements IDefaultUseCase<IHttpResponse, IUpdateUserServiceDataIn>
 {
-  constructor(private userRepositoryPort: IUserRepositoryPort) {}
+  constructor(
+    private userRepositoryPort: IUserRepositoryPort,
+    private fieldsValidator: IUserFieldsValidationPort
+  ) {}
 
   async execute(
     data: IUpdateUserServiceDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const userSchema = zod.object({
-        id: zod.string().uuid("O ID informado não é válido."),
-        name: zod.string().optional(),
-        gender: zod
-          .enum(["male", "female"], {
-            description: "Escolha masculino ou feminino.",
-          })
-          .optional(),
-        cpf: zod
-          .string()
-          .length(11, "O CPF digitado não possui 11 caracteres.")
-          .optional(),
-        picture_url: zod.string().optional(),
-        phone_number: zod.string().optional(),
-      });
-
-      userSchema.parse(data);
+      this.fieldsValidator.update(data);
 
       const { id, ...userDataIn } = data;
 

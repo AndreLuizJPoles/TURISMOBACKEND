@@ -1,4 +1,5 @@
 import { IUserEntity } from "../../entities";
+import { IUserFieldsValidationPort } from "../../ports/fieldsValidation";
 import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse } from "../../types";
 import { excludeFields } from "../../utils";
@@ -9,13 +10,14 @@ import zod from "zod";
 export class GetUserByIdUseCase
   implements IDefaultUseCase<IHttpResponse, string>
 {
-  constructor(private userRepositoryPort: IUserRepositoryPort) {}
+  constructor(
+    private userRepositoryPort: IUserRepositoryPort,
+    private fieldsValidator: IUserFieldsValidationPort
+  ) {}
 
   async execute(id: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const userSchema = zod.string().uuid("O ID informado não é válido.");
-
-      userSchema.parse(id);
+      this.fieldsValidator.getById(id);
 
       const user = await this.userRepositoryPort.getById(id);
 

@@ -1,5 +1,6 @@
 import { IUserEntity } from "../../entities";
 import { IPasswordHashPort } from "../../ports";
+import { IUserFieldsValidationPort } from "../../ports/fieldsValidation";
 import { IUserRepositoryPort } from "../../ports/repository";
 import {
   IHttpResponse,
@@ -9,37 +10,21 @@ import {
 import { HttpResponseUtils, excludeFields } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
 import crypto from "crypto";
-import zod from "zod";
 
 export class CreateUserUseCase
   implements IDefaultUseCase<IHttpResponse, ICreateUserServiceDataIn>
 {
   constructor(
     private userRepositoryPort: IUserRepositoryPort,
-    private passwordHashPort: IPasswordHashPort
+    private passwordHashPort: IPasswordHashPort,
+    private fieldsValidator: IUserFieldsValidationPort
   ) {}
 
   async execute(
     data: ICreateUserServiceDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const userSchema = zod.object({
-        name: zod.string(),
-        email: zod.string().email(),
-        gender: zod.enum(["male", "female"], {
-          description: "Escolha masculino ou feminino.",
-        }),
-        cpf: zod
-          .string()
-          .length(11, "O CPF digitado não possui 11 caracteres."),
-        password: zod.string().min(8, {
-          message: "Sua senha deve ter pelo menos 8 caracteres.",
-        }),
-        picture_url: zod.string(),
-        phone_number: zod.string(),
-      });
-
-      userSchema.parse(data);
+      this.fieldsValidator.create(data);
 
       const id = crypto.randomUUID();
       const hashed_password = await this.passwordHashPort.hash(data.password);
@@ -55,11 +40,12 @@ export class CreateUserUseCase
       if (!user) {
         return HttpResponseUtils.badRequestResponse();
       }
-    
-      const userDataFormatted = excludeFields(['password'], user);
+
+      const userDataFormatted = excludeFields(["password"], user);
 
       return HttpResponseUtils.createdResponse(userDataFormatted);
     } catch (error: any) {
+      console.log(error)
       return HttpResponseUtils.internalServerErrorResponse(error);
     }
   }

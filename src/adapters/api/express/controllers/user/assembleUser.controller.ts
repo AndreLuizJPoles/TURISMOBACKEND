@@ -8,6 +8,7 @@ import {
   UpdateUserUseCase,
 } from "../../../../../core/use-cases";
 import { UserRepositoryAdapter } from "../../../../database/prisma";
+import { UserAPIFieldsValidationAdapter } from "../../../../utils/apiFieldsValidation/userFieldsValidation.adapter";
 import { PasswordHashAdapter } from "../../../../utils/passwordHash.adapter";
 import { UserController } from "./user.controller";
 
@@ -18,13 +19,15 @@ export const assembleUserController = (): UserController => {
   const passwordSecret = String(process.env.PASSWORD_HASH_SECRET)
   const passwordHash = new PasswordHashAdapter(passwordSalt, passwordSecret);
 
+  const userFieldsValidator = new UserAPIFieldsValidationAdapter()
+
   const userUseCases: IUserUseCases = {
-    createUser: new CreateUserUseCase(userRepository, passwordHash),
-    deleteUser: new DeleteUserUseCase(userRepository),
+    createUser: new CreateUserUseCase(userRepository, passwordHash, userFieldsValidator),
+    deleteUser: new DeleteUserUseCase(userRepository, userFieldsValidator),
     getAllUsers: new GetAllUsersUseCase(userRepository),
-    getUserByEmail: new GetUserByEmailUseCase(userRepository),
-    getUserById: new GetUserByIdUseCase(userRepository),
-    updateUser: new UpdateUserUseCase(userRepository),
+    getUserByEmail: new GetUserByEmailUseCase(userRepository, userFieldsValidator),
+    getUserById: new GetUserByIdUseCase(userRepository, userFieldsValidator),
+    updateUser: new UpdateUserUseCase(userRepository, userFieldsValidator),
   };
 
   const userController = new UserController(userUseCases);

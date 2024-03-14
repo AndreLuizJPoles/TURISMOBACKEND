@@ -1,4 +1,5 @@
 import { IUserEntity } from "../../entities";
+import { IUserFieldsValidationPort } from "../../ports/fieldsValidation";
 import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse } from "../../types";
 import { excludeFields } from "../../utils";
@@ -9,13 +10,14 @@ import zod from "zod";
 export class GetUserByEmailUseCase
   implements IDefaultUseCase<IHttpResponse, string>
 {
-  constructor(private userRepositoryPort: IUserRepositoryPort) {}
+  constructor(
+    private userRepositoryPort: IUserRepositoryPort,
+    private fieldsValidator: IUserFieldsValidationPort
+  ) {}
 
   async execute(email: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const userSchema = zod.string().email("O email digitado não é válido.");
-
-      userSchema.parse(email);
+      this.fieldsValidator.getByEmail(email);
 
       const user = await this.userRepositoryPort.getByEmail(email);
 
