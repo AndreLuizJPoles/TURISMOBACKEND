@@ -8,8 +8,8 @@ export class PasswordHashAdapter implements IPasswordHashPort {
     try {
       const hashed_password = await argon.hash(password, {
         type: argon.argon2id,
-        secret: this.secret,
-        salt: this.salt,
+        salt: Buffer.from(this.salt),
+        secret: Buffer.from(this.secret),
       });
 
       return hashed_password;
@@ -25,10 +25,7 @@ export class PasswordHashAdapter implements IPasswordHashPort {
     try {
       const isPasswordValid = await argon.verify(
         hashed_password,
-        plaintext_password,
-        {
-          secret: this.secret,
-        }
+        plaintext_password
       );
 
       return isPasswordValid;
