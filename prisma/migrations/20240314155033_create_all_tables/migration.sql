@@ -1,14 +1,4 @@
 -- CreateTable
-CREATE TABLE `roles` (
-    `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `users` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
@@ -17,7 +7,6 @@ CREATE TABLE `users` (
     `cpf` VARCHAR(191) NOT NULL,
     `picture_url` VARCHAR(191) NOT NULL,
     `phone_number` VARCHAR(191) NOT NULL,
-    `role_id` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -110,9 +99,6 @@ CREATE TABLE `favorite_establishments` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `users` ADD CONSTRAINT `users_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `establishments` ADD CONSTRAINT `establishments_category_id_fkey` FOREIGN KEY (`category_id`) REFERENCES `establishment_categories`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

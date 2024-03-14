@@ -12,18 +12,6 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
-model Role {
-  id         String   @id
-  name       String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-
-  users User[]
-
-  @@map("roles")
-}
-
 model User {
   id           String     @id
   name         String
@@ -32,8 +20,6 @@ model User {
   cpf          String     @unique
   picture_url  String
   phone_number String
-  role         Role?      @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  role_id      String
   password     String
   created_at   DateTime   @default(now())
   updated_at   DateTime   @default(now()) @updatedAt
