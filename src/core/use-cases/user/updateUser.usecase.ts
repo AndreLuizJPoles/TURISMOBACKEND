@@ -1,6 +1,7 @@
 import { IUserEntity } from "../../entities";
 import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse, IUpdateUserServiceDataIn } from "../../types";
+import { excludeFields } from "../../utils";
 import { HttpResponseUtils } from "../../utils/httpResponse.utils";
 import { IDefaultUseCase } from "../default.usecase";
 import zod from "zod";
@@ -39,7 +40,9 @@ export class UpdateUserUseCase
         return HttpResponseUtils.badRequestResponse();
       }
 
-      return HttpResponseUtils.okResponse(user);
+      const userDataFormatted = excludeFields(["password"], user);
+
+      return HttpResponseUtils.okResponse(userDataFormatted);
     } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }

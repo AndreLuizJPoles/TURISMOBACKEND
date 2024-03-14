@@ -1,6 +1,7 @@
 import { IUserEntity } from "../../entities";
 import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse } from "../../types";
+import { excludeFields } from "../../utils";
 import { HttpResponseUtils } from "../../utils/httpResponse.utils";
 import { IDefaultUseCase } from "../default.usecase";
 import zod from "zod";
@@ -14,7 +15,7 @@ export class GetUserByEmailUseCase
     try {
       const userSchema = zod.string().email("O email digitado não é válido.");
 
-      userSchema.parse(email)
+      userSchema.parse(email);
 
       const user = await this.userRepositoryPort.getByEmail(email);
 
@@ -22,7 +23,9 @@ export class GetUserByEmailUseCase
         return HttpResponseUtils.notFoundResponse();
       }
 
-      return HttpResponseUtils.okResponse(user);
+      const userDataFormatted = excludeFields(["password"], user);
+
+      return HttpResponseUtils.okResponse(userDataFormatted);
     } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }

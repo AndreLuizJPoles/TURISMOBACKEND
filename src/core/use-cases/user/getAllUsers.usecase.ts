@@ -1,6 +1,7 @@
 import { IUserEntity } from "../../entities";
 import { IUserRepositoryPort } from "../../ports/repository";
 import { IHttpResponse } from "../../types";
+import { excludeFields } from "../../utils";
 import { HttpResponseUtils } from "../../utils/httpResponse.utils";
 import { IDefaultUseCase } from "../default.usecase";
 
@@ -15,7 +16,9 @@ export class GetAllUsersUseCase implements IDefaultUseCase<IHttpResponse> {
         return HttpResponseUtils.notFoundResponse();
       }
 
-      return HttpResponseUtils.okResponse(users);
+      const userDataFormatted = excludeFields(["password"], users);
+
+      return HttpResponseUtils.okResponse(userDataFormatted);
     } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }

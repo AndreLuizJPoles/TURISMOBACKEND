@@ -6,7 +6,7 @@ import {
   ICreateUserRepositoryDataIn,
   ICreateUserServiceDataIn,
 } from "../../types";
-import { HttpResponseUtils } from "../../utils";
+import { HttpResponseUtils, excludeFields } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
 import crypto from "crypto";
 import zod from "zod";
@@ -55,8 +55,10 @@ export class CreateUserUseCase
       if (!user) {
         return HttpResponseUtils.badRequestResponse();
       }
+    
+      const userDataFormatted = excludeFields(['password'], user);
 
-      return HttpResponseUtils.createdResponse(user);
+      return HttpResponseUtils.createdResponse(userDataFormatted);
     } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }
