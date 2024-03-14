@@ -15,11 +15,11 @@ export type IUpdateUserRepositoryDataIn = Partial<
   Omit<ICreateUserRepositoryDataIn, "id">
 >;
 
-export interface ICreateUserServiceDataIn
+export interface ICreateUserUseCaseDataIn
   extends Omit<ICreateUserRepositoryDataIn, "id"> {}
 
-export interface IUpdateUserServiceDataIn
-  extends Partial<Omit<ICreateUserServiceDataIn, "email" | "picture_url">> {
+export interface IUpdateUserUseCaseDataIn
+  extends Partial<Omit<ICreateUserUseCaseDataIn, "email" | "picture_url">> {
   id: string;
 }
 
@@ -30,4 +30,9 @@ export interface IUserUseCases {
   createUser: CreateUserUseCase;
   updateUser: UpdateUserUseCase;
   deleteUser: DeleteUserUseCase;
+}
+
+export interface ILoginUseCaseDataIn {
+  email: string;
+  password: string;
 }

@@ -1,8 +1,8 @@
 import { IUserEntity } from "../../../../../core/entities";
 import {
-  ICreateUserServiceDataIn,
+  ICreateUserUseCaseDataIn,
   IHttpResponse,
-  IUpdateUserServiceDataIn,
+  IUpdateUserUseCaseDataIn,
   IUserUseCases,
 } from "../../../../../core/types";
 
@@ -10,7 +10,7 @@ export class UserController {
   constructor(private userUseCases: IUserUseCases) {}
 
   async createUser(
-    data: ICreateUserServiceDataIn
+    data: ICreateUserUseCaseDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     return this.userUseCases.createUser.execute(data);
   }
@@ -28,7 +28,7 @@ export class UserController {
   }
 
   async updateUser(
-    data: IUpdateUserServiceDataIn
+    data: IUpdateUserUseCaseDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     return this.userUseCases.updateUser.execute(data);
   }
