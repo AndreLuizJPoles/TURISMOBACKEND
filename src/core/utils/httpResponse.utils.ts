@@ -22,6 +22,13 @@ export class HttpResponseUtils {
     };
   }
 
+  static unauthorizedRequestResponse(): IHttpResponse {
+    return {
+      status: 401,
+      message: "Ops! Ação não autorizada.",
+    };
+  }
+
   static createdResponse<DataType>(data: DataType): IHttpResponse {
     return {
       status: 201,

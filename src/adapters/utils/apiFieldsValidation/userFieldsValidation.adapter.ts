@@ -22,7 +22,16 @@ export class UserAPIFieldsValidationAdapter
     userSchema.parse(id);
   }
 
-  login<PayloadDataType>(data: PayloadDataType): void | Error {}
+  login<PayloadDataType>(data: PayloadDataType): void | Error {
+    const userSchema = zod.object({
+      email: zod.string().email(),
+      password: zod.string().min(8, {
+        message: "Sua senha deve ter pelo menos 8 caracteres.",
+      }),
+    });
+
+    userSchema.parse(data);
+  }
 
   create<PayloadDataType>(data: PayloadDataType): void | Error {
     const userSchema = zod.object({
