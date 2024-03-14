@@ -1,24 +1,22 @@
 import { IUserEntity } from "../../entities";
-import { IUserFieldsValidationPort } from "../../ports/fieldsValidation";
-import { IUserRepositoryPort } from "../../ports/repository";
-import { IHttpResponse, IUpdateUserServiceDataIn } from "../../types";
-import { excludeFields } from "../../utils";
-import { HttpResponseUtils } from "../../utils/httpResponse.utils";
+import { IUserFieldsValidationPort, IUserRepositoryPort } from "../../ports";
+import { IHttpResponse, IUpdateUserUseCaseDataIn } from "../../types";
+import { excludeFields, HttpResponseUtils } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
-import zod from "zod";
+
 export class UpdateUserUseCase
-  implements IDefaultUseCase<IHttpResponse, IUpdateUserServiceDataIn>
+  implements IDefaultUseCase<IHttpResponse, IUpdateUserUseCaseDataIn>
 {
   constructor(
     private userRepositoryPort: IUserRepositoryPort,
-    private fieldsValidator: IUserFieldsValidationPort
+    private fieldsValidatorPort: IUserFieldsValidationPort
   ) {}
 
   async execute(
-    data: IUpdateUserServiceDataIn
+    data: IUpdateUserUseCaseDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     try {
-      this.fieldsValidator.update(data);
+      this.fieldsValidatorPort.update(data);
 
       const { id, ...userDataIn } = data;
 

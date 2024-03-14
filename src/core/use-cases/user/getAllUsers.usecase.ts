@@ -1,8 +1,7 @@
 import { IUserEntity } from "../../entities";
-import { IUserRepositoryPort } from "../../ports/repository";
+import { IUserRepositoryPort } from "../../ports";
 import { IHttpResponse } from "../../types";
-import { excludeFields } from "../../utils";
-import { HttpResponseUtils } from "../../utils/httpResponse.utils";
+import { excludeFields, HttpResponseUtils } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
 
 export class GetAllUsersUseCase implements IDefaultUseCase<IHttpResponse> {

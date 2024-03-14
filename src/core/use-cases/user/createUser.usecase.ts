@@ -1,30 +1,28 @@
 import { IUserEntity } from "../../entities";
-import { IPasswordHashPort } from "../../ports";
-import { IUserFieldsValidationPort } from "../../ports/fieldsValidation";
-import { IUserRepositoryPort } from "../../ports/repository";
+import { IPasswordHashPort, IUserFieldsValidationPort, IUserRepositoryPort } from "../../ports";
 import {
   IHttpResponse,
   ICreateUserRepositoryDataIn,
-  ICreateUserServiceDataIn,
+  ICreateUserUseCaseDataIn,
 } from "../../types";
 import { HttpResponseUtils, excludeFields } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
 import crypto from "crypto";
 
 export class CreateUserUseCase
-  implements IDefaultUseCase<IHttpResponse, ICreateUserServiceDataIn>
+  implements IDefaultUseCase<IHttpResponse, ICreateUserUseCaseDataIn>
 {
   constructor(
     private userRepositoryPort: IUserRepositoryPort,
     private passwordHashPort: IPasswordHashPort,
-    private fieldsValidator: IUserFieldsValidationPort
+    private fieldsValidatorPort: IUserFieldsValidationPort
   ) {}
 
   async execute(
-    data: ICreateUserServiceDataIn
+    data: ICreateUserUseCaseDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     try {
-      this.fieldsValidator.create(data);
+      this.fieldsValidatorPort.create(data);
 
       const id = crypto.randomUUID();
       const hashed_password = await this.passwordHashPort.hash(data.password);
