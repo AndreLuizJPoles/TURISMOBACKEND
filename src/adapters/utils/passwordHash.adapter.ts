@@ -2,7 +2,8 @@ import { IPasswordHashPort } from "../../core/ports";
 import argon from "argon2";
 
 export class PasswordHashAdapter implements IPasswordHashPort {
-  constructor(private salt: string, private secret: string) {}
+  private salt: string = String(process.env.PASSWORD_HASH_SALT)
+  private secret: string = String(process.env.PASSWORD_HASH_SECRET)
 
   async hash(password: string): Promise<string> {
     try {

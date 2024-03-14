@@ -15,17 +15,22 @@ import { UserController } from "./user.controller";
 export const assembleUserController = (): UserController => {
   const userRepository = new UserRepositoryAdapter();
 
-  const passwordSalt = String(process.env.PASSWORD_HASH_SALT)
-  const passwordSecret = String(process.env.PASSWORD_HASH_SECRET)
-  const passwordHash = new PasswordHashAdapter(passwordSalt, passwordSecret);
+  const passwordHash = new PasswordHashAdapter();
 
-  const userFieldsValidator = new UserAPIFieldsValidationAdapter()
+  const userFieldsValidator = new UserAPIFieldsValidationAdapter();
 
   const userUseCases: IUserUseCases = {
-    createUser: new CreateUserUseCase(userRepository, passwordHash, userFieldsValidator),
+    createUser: new CreateUserUseCase(
+      userRepository,
+      passwordHash,
+      userFieldsValidator
+    ),
     deleteUser: new DeleteUserUseCase(userRepository, userFieldsValidator),
     getAllUsers: new GetAllUsersUseCase(userRepository),
-    getUserByEmail: new GetUserByEmailUseCase(userRepository, userFieldsValidator),
+    getUserByEmail: new GetUserByEmailUseCase(
+      userRepository,
+      userFieldsValidator
+    ),
     getUserById: new GetUserByIdUseCase(userRepository, userFieldsValidator),
     updateUser: new UpdateUserUseCase(userRepository, userFieldsValidator),
   };
