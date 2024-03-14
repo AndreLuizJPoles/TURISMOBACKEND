@@ -1,5 +1,6 @@
 import express from "express";
 import { mainRouter } from "./routes/assembleRoutes.routes";
+import "dotenv/config";
 
 export class ExpressServer {
   private app = express();
