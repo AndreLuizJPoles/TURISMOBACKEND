@@ -20,7 +20,13 @@ export class UpdateUserUseCase
 
       const { id, ...userDataIn } = data;
 
-      const user = await this.userRepositoryPort.update(id, userDataIn);
+      const userData = userDataIn;
+
+      if (userData.birthdate) {
+        userData.birthdate = new Date(userData.birthdate);
+      }
+
+      const user = await this.userRepositoryPort.update(id, userData);
 
       if (!user) {
         return HttpResponseUtils.badRequestResponse();

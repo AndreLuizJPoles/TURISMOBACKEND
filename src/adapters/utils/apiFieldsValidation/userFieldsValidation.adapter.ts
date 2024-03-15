@@ -1,5 +1,9 @@
 import { IUserFieldsValidationPort } from "../../../core/ports/fieldsValidation";
 import zod from "zod";
+import {
+  ICreateUserUseCaseDataIn,
+  IUpdateUserUseCaseDataIn,
+} from "../../../core/types";
 
 export class UserAPIFieldsValidationAdapter
   implements IUserFieldsValidationPort
@@ -33,24 +37,35 @@ export class UserAPIFieldsValidationAdapter
     userSchema.parse(data);
   }
 
-  create<PayloadDataType>(data: PayloadDataType): void | Error {
+  create(data: ICreateUserUseCaseDataIn): void | Error {
+    const birthdate = new Date(data.birthdate);
+
+    const userData: ICreateUserUseCaseDataIn = {
+      ...data,
+      birthdate,
+    };
+
     const userSchema = zod.object({
       name: zod.string(),
       email: zod.string().email(),
-      gender: zod.enum(["male", "female"], {
-        description: "Escolha masculino ou feminino.",
-      }),
-      cpf: zod.string().length(11, "O CPF digitado não possui 11 caracteres."),
       password: zod.string().min(8, {
         message: "Sua senha deve ter pelo menos 8 caracteres.",
       }),
       picture_url: zod.string(),
-      phone_number: zod.string(),
+      birthdate: zod.date({
+        description: "Informe uma data de nascimento válida",
+      }),
     });
 
-    userSchema.parse(data);
+    userSchema.parse(userData);
   }
-  update<PayloadDataIn>(data: PayloadDataIn): void | Error {
+  update(data: IUpdateUserUseCaseDataIn): void | Error {
+    const userData = data;
+
+    if (data.birthdate) {
+      userData.birthdate = new Date(data.birthdate);
+    }
+
     const userSchema = zod.object({
       id: zod.string().uuid("O ID informado não é válido."),
       name: zod.string().optional(),
@@ -65,8 +80,13 @@ export class UserAPIFieldsValidationAdapter
         .optional(),
       picture_url: zod.string().optional(),
       phone_number: zod.string().optional(),
+      birthdate: zod
+        .date({
+          description: "Informe uma data de nascimento válida",
+        })
+        .optional(),
     });
 
-    userSchema.parse(data);
+    userSchema.parse(userData);
   }
 }

@@ -16,10 +16,15 @@ export type IUpdateUserRepositoryDataIn = Partial<
 >;
 
 export interface ICreateUserUseCaseDataIn
-  extends Omit<ICreateUserRepositoryDataIn, "id"> {}
+  extends Omit<
+    ICreateUserRepositoryDataIn,
+    "id" | "gender" | "cpf" | "phone_number"
+  > {}
 
 export interface IUpdateUserUseCaseDataIn
-  extends Partial<Omit<ICreateUserUseCaseDataIn, "email" | "picture_url">> {
+  extends Partial<
+    Omit<IUpdateUserRepositoryDataIn, "email" | "picture_url" | "password">
+  > {
   id: string;
 }
 

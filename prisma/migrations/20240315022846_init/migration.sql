@@ -3,11 +3,12 @@ CREATE TABLE `users` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `gender` ENUM('male', 'female') NOT NULL,
-    `cpf` VARCHAR(191) NOT NULL,
+    `gender` ENUM('male', 'female') NULL,
+    `cpf` VARCHAR(191) NULL,
     `picture_url` VARCHAR(191) NOT NULL,
-    `phone_number` VARCHAR(191) NOT NULL,
+    `phone_number` VARCHAR(191) NULL,
     `password` VARCHAR(191) NOT NULL,
+    `birthdate` DATETIME(3) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -31,17 +32,18 @@ CREATE TABLE `establishment_categories` (
 CREATE TABLE `establishments` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `cnpj` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
-    `opening_time` TIME NOT NULL,
-    `closing_time` TIME NOT NULL,
-    `opened` BOOLEAN NOT NULL,
+    `status` BOOLEAN NOT NULL,
     `picture_url` VARCHAR(191) NOT NULL,
+    `background_picture_url` VARCHAR(191) NULL,
     `category_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `establishments_cnpj_key`(`cnpj`),
+    UNIQUE INDEX `establishments_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -49,12 +51,29 @@ CREATE TABLE `establishments` (
 CREATE TABLE `establishment_contacts` (
     `id` VARCHAR(191) NOT NULL,
     `phone_number` VARCHAR(191) NOT NULL,
-    `email` VARCHAR(191) NOT NULL,
     `establishment_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `establishment_contacts_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `establishment_working_time` (
+    `id` VARCHAR(191) NOT NULL,
+    `opening_time` TIME NOT NULL,
+    `closing_time` TIME NOT NULL,
+    `establishment_id` VARCHAR(191) NOT NULL,
+    `open_on_sunday` BOOLEAN NOT NULL,
+    `open_on_monday` BOOLEAN NOT NULL,
+    `open_on_tuesday` BOOLEAN NOT NULL,
+    `open_on_wednesday` BOOLEAN NOT NULL,
+    `open_on_thursday` BOOLEAN NOT NULL,
+    `open_on_friday` BOOLEAN NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `establishment_working_time_establishment_id_key`(`establishment_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -105,6 +124,9 @@ ALTER TABLE `establishments` ADD CONSTRAINT `establishments_category_id_fkey` FO
 
 -- AddForeignKey
 ALTER TABLE `establishment_contacts` ADD CONSTRAINT `establishment_contacts_establishment_id_fkey` FOREIGN KEY (`establishment_id`) REFERENCES `establishments`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE `establishment_working_time` ADD CONSTRAINT `establishment_working_time_establishment_id_fkey` FOREIGN KEY (`establishment_id`) REFERENCES `establishments`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `addresses` ADD CONSTRAINT `addresses_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

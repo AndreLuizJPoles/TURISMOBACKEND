@@ -1,5 +1,9 @@
 import { IUserEntity } from "../../entities";
-import { IPasswordHashPort, IUserFieldsValidationPort, IUserRepositoryPort } from "../../ports";
+import {
+  IPasswordHashPort,
+  IUserFieldsValidationPort,
+  IUserRepositoryPort,
+} from "../../ports";
 import {
   IHttpResponse,
   ICreateUserRepositoryDataIn,
@@ -31,6 +35,7 @@ export class CreateUserUseCase
         ...data,
         password: hashed_password,
         id,
+        birthdate: new Date(data.birthdate),
       };
 
       const user = await this.userRepositoryPort.create(user_repository_data);
@@ -43,7 +48,6 @@ export class CreateUserUseCase
 
       return HttpResponseUtils.createdResponse(userDataFormatted);
     } catch (error: any) {
-      console.log(error)
       return HttpResponseUtils.internalServerErrorResponse(error);
     }
   }
