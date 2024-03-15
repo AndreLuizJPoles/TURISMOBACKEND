@@ -1,23 +1,28 @@
-import { Request, Response, Router } from "express";
-import { assembleUserController } from "../controllers";
+import { NextFunction, Request, Response, Router } from "express";
+import { userAssembler } from "../../../assembler";
+import { APIsAccessControlMiddleware } from "../middlewares";
 
 export const userRouter = Router();
 
-const userController = assembleUserController();
+const { userController } = userAssembler();
 
-userRouter.get("/", async (request: Request, response: Response) => {
-  if (request.query?.email) {
-    const email = request.query.email as string;
+userRouter.get(
+  "/",
+  APIsAccessControlMiddleware.authentication,
+  async (request: Request, response: Response) => {
+    if (request.query?.email) {
+      const email = request.query.email as string;
 
-    const { status, ...data } = await userController.getUserByEmail(email);
+      const { status, ...data } = await userController.getUserByEmail(email);
+
+      return response.status(status).json(data);
+    }
+
+    const { status, ...data } = await userController.getAllUsers();
 
     return response.status(status).json(data);
   }
-
-  const { status, ...data } = await userController.getAllUsers();
-
-  return response.status(status).json(data);
-});
+);
 
 userRouter.get("/", async (request: Request, response: Response) => {
   const { id } = request.body;
