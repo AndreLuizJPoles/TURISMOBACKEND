@@ -35,7 +35,7 @@ export class APIsAccessControlMiddleware {
 
     request.user = {
       user,
-      type: "REGULAR",
+      role: decodeToken.role,
     };
 
     return next();

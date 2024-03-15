@@ -4,7 +4,7 @@ import {
   IUserFieldsValidationPort,
   IJwtTokenGeneratorPort,
 } from "../../ports";
-import { IHttpResponse, ILoginUseCaseDataIn } from "../../types";
+import { IHttpResponse, ILoginUseCaseDataIn, IRole } from "../../types";
 import { HttpResponseUtils } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
 
@@ -40,6 +40,7 @@ export class LoginUserUseCase
 
       const jwtToken = this.jwtTokenGenerator.generateToken({
         id: user.id,
+        role: IRole.USER,
       });
 
       return HttpResponseUtils.okResponse(jwtToken);

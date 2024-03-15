@@ -4,6 +4,7 @@ import { UserRepositoryAdapter } from "../database/prisma";
 import { UserAPIFieldsValidationAdapter } from "../utils/apiFieldsValidation/userFieldsValidation.adapter";
 import { JwtTokenGeneratorAdapter } from "../utils/jwtTokenGenerator.adapter";
 import { PasswordHashAdapter } from "../utils/passwordHash.adapter";
+import { IRole } from "../../core/types/role.types";
 
 export interface IUserAssembler {
   userController: UserController;
@@ -15,5 +16,5 @@ export interface IUserAssembler {
 
 export interface IUserExpressRequest {
   user: IUserEntity;
-  type: string;
+  role: IRole;
 }
