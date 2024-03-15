@@ -1,0 +1,69 @@
+import { randomUUID } from "crypto";
+import { IEstablishmentEntity } from "../../entities";
+import {
+  IAddressRepositoryPort,
+  IEstablishmentRepositoryPort,
+  IEstablishmentWorkingTimeRepositoryPort,
+} from "../../ports";
+import {
+  ICreateAddressRepositoryDataIn,
+  ICreateEstablishmentRepositoryDataIn,
+  ICreateEstablishmentUseCaseDataIn,
+  ICreateEstablishmentWorkingTimeRepositoryDataIn,
+  IHttpResponse,
+} from "../../types";
+import { HttpResponseUtils } from "../../utils";
+import { IDefaultUseCase } from "../default.usecase";
+
+export class CreateEstablishmentUseCase
+  implements IDefaultUseCase<IHttpResponse, ICreateEstablishmentUseCaseDataIn>
+{
+  constructor(
+    private establishmentRepositoryPort: IEstablishmentRepositoryPort,
+    private addressRepositoryPort: IAddressRepositoryPort,
+    private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort
+  ) {}
+
+  async execute(
+    data: ICreateEstablishmentUseCaseDataIn
+  ): Promise<IHttpResponse<IEstablishmentEntity>> {
+    try {
+      const { address, workingTime, ...establishmentData } = data;
+
+      const newEstablishmentData: ICreateEstablishmentRepositoryDataIn = {
+        ...establishmentData,
+        id: randomUUID(),
+      };
+
+      const establishment = await this.establishmentRepositoryPort.create(
+        newEstablishmentData
+      );
+
+      if (!establishment) {
+        return HttpResponseUtils.badRequestResponse();
+      }
+
+      const addressData: ICreateAddressRepositoryDataIn = {
+        ...address,
+        id: randomUUID(),
+        establishment_id: establishment.id,
+      };
+      const establishmentWorkingTimeData: ICreateEstablishmentWorkingTimeRepositoryDataIn =
+        {
+          ...workingTime,
+          id: randomUUID(),
+          establishment_id: establishment.id,
+        };
+
+      await this.addressRepositoryPort.create(addressData);
+
+      await this.establishmentWorkingTimeRepositoryPort.create(
+        establishmentWorkingTimeData
+      );
+
+      return HttpResponseUtils.createdResponse(establishment);
+    } catch (error: any) {
+      return HttpResponseUtils.internalServerErrorResponse(error);
+    }
+  }
+}
