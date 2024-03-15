@@ -2,8 +2,8 @@ import { IPasswordHashPort } from "../../core/ports";
 import argon from "argon2";
 
 export class PasswordHashAdapter implements IPasswordHashPort {
-  private salt: string = String(process.env.PASSWORD_HASH_SALT)
-  private secret: string = String(process.env.PASSWORD_HASH_SECRET)
+  private salt: string = String(process.env.PASSWORD_HASH_SALT);
+  private secret: string = String(process.env.PASSWORD_HASH_SECRET);
 
   async hash(password: string): Promise<string> {
     try {
@@ -26,11 +26,15 @@ export class PasswordHashAdapter implements IPasswordHashPort {
     try {
       const isPasswordValid = await argon.verify(
         hashed_password,
-        plaintext_password
+        plaintext_password,
+        {
+          secret: Buffer.from(this.secret),
+        }
       );
 
       return isPasswordValid;
     } catch (error: any) {
+      console.log(error)
       throw new Error(error);
     }
   }

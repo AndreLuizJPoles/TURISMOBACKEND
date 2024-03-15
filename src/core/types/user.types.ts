@@ -1,4 +1,5 @@
 import { IUserEntity } from "../entities";
+import { LoginUserUseCase } from "../use-cases";
 import { CreateUserUseCase } from "../use-cases/user/createUser.usecase";
 import { DeleteUserUseCase } from "../use-cases/user/deleteUser.usecase";
 import { GetAllUsersUseCase } from "../use-cases/user/getAllUsers.usecase";
@@ -35,6 +36,7 @@ export interface IUserUseCases {
   createUser: CreateUserUseCase;
   updateUser: UpdateUserUseCase;
   deleteUser: DeleteUserUseCase;
+  loginUser: LoginUserUseCase;
 }
 
 export interface ILoginUseCaseDataIn {

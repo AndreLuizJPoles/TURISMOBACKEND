@@ -50,3 +50,11 @@ userRouter.delete("/", async (request: Request, response: Response) => {
 
   return response.status(status).json(data);
 });
+
+userRouter.post("/login", async (request: Request, response: Response) => {
+  const loginData = request.body;
+
+  const { status, ...data } = await userController.login(loginData);
+
+  return response.status(status).json(data);
+});

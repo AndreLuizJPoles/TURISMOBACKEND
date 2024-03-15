@@ -2,6 +2,7 @@ import { IUserEntity } from "../../../../../core/entities";
 import {
   ICreateUserUseCaseDataIn,
   IHttpResponse,
+  ILoginUseCaseDataIn,
   IUpdateUserUseCaseDataIn,
   IUserUseCases,
 } from "../../../../../core/types";
@@ -35,5 +36,9 @@ export class UserController {
 
   async deleteUser(id: string): Promise<IHttpResponse<IUserEntity>> {
     return this.userUseCases.deleteUser.execute(id);
+  }
+
+  async login(data: ILoginUseCaseDataIn): Promise<IHttpResponse<string>> {
+    return this.userUseCases.loginUser.execute(data);
   }
 }
