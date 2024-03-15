@@ -36,7 +36,7 @@ model User {
 model EstablishmentCategory {
   id          String   @id
   name        String
-  description String
+  description String @db.VarChar(500)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
