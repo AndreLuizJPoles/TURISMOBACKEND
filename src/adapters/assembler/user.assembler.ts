@@ -1,20 +1,21 @@
-import { IUserUseCases } from "../../../../../core/types";
+import { IUserUseCases } from "../../core/types";
 import {
   CreateUserUseCase,
   DeleteUserUseCase,
   GetAllUsersUseCase,
   GetUserByEmailUseCase,
   GetUserByIdUseCase,
-  LoginUserUseCase,
   UpdateUserUseCase,
-} from "../../../../../core/use-cases";
-import { UserRepositoryAdapter } from "../../../../database/prisma";
-import { UserAPIFieldsValidationAdapter } from "../../../../utils/apiFieldsValidation/userFieldsValidation.adapter";
-import { JwtTokenGeneratorAdapter } from "../../../../utils/jwtTokenGenerator.adapter";
-import { PasswordHashAdapter } from "../../../../utils/passwordHash.adapter";
-import { UserController } from "./user.controller";
+  LoginUserUseCase,
+} from "../../core/use-cases";
+import { UserController } from "../api/express/controllers";
+import { UserRepositoryAdapter } from "../database/prisma";
+import { IUserAssembler } from "../types";
+import { UserAPIFieldsValidationAdapter } from "../utils/apiFieldsValidation/userFieldsValidation.adapter";
+import { JwtTokenGeneratorAdapter } from "../utils/jwtTokenGenerator.adapter";
+import { PasswordHashAdapter } from "../utils/passwordHash.adapter";
 
-export const assembleUserController = (): UserController => {
+export const userAssembler = (): IUserAssembler => {
   const userRepository = new UserRepositoryAdapter();
   const passwordHash = new PasswordHashAdapter();
   const userFieldsValidator = new UserAPIFieldsValidationAdapter();
@@ -44,5 +45,11 @@ export const assembleUserController = (): UserController => {
 
   const userController = new UserController(userUseCases);
 
-  return userController;
+  return {
+    userController,
+    passwordHash,
+    userFieldsValidator,
+    jwtTokenGenerator,
+    userRepository,
+  };
 };
