@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { userAssembler } from "../../../assembler";
 import { IAuthorizationParameters, IPermission } from "../../../types";
+import { loggedUser } from "../../../../core/utils/loggedUser.utils";
 
 const { userRepository, jwtTokenGenerator } = userAssembler();
 
@@ -47,10 +48,8 @@ export class APIsAccessControlMiddleware {
       });
     }
 
-    request.user = {
-      user: userExists!,
-      role: decodeToken.role,
-    };
+    loggedUser.user = userExists;
+    loggedUser.role = decodeToken.role;
 
     return next();
   }
@@ -59,16 +58,16 @@ export class APIsAccessControlMiddleware {
     const { action, resource, roles } = accessPolicy;
 
     return (request: Request, response: Response, next: NextFunction) => {
-      if (!roles.includes(request.user.role)) {
+      if (!roles.includes(loggedUser.role!)) {
         return response.status(401).json({
           message: "Ops! Ação não autorizada.",
         });
       }
 
-      const { role } = request.user;
+      const { role } = loggedUser;
 
-      const resourceExists = permissions[role][resource];
-      const actionExists = permissions[role][resource]?.includes(action);
+      const resourceExists = permissions[role!][resource];
+      const actionExists = permissions[role!][resource]?.includes(action);
 
       if (!resourceExists || !actionExists) {
         return response.status(401).json({
@@ -79,6 +78,4 @@ export class APIsAccessControlMiddleware {
       return next();
     };
   }
-
-  
 }
