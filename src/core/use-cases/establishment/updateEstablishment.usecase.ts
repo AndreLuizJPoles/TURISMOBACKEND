@@ -23,9 +23,9 @@ export class UpdateEstablishmentUseCase
     data: IUpdateEstablishmentUseCaseDataIn
   ): Promise<IHttpResponse<IEstablishmentEntity>> {
     try {
-      this.fieldsValidatorPort.update(data);
+      const validatedFields = this.fieldsValidatorPort.update(data);
 
-      const { address, workingTime, id, ...establishmentData } = data;
+      const { address, workingTime, id, ...establishmentData } = validatedFields;
 
       const establishment = await this.establishmentRepositoryPort.update(
         id,

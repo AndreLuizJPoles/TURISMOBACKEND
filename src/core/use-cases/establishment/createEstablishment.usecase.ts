@@ -5,7 +5,6 @@ import {
   IEstablishmentFieldsValidationPort,
   IEstablishmentRepositoryPort,
   IEstablishmentWorkingTimeRepositoryPort,
-  IPasswordHashPort,
 } from "../../ports";
 import {
   ICreateAddressRepositoryDataIn,
@@ -16,6 +15,7 @@ import {
 } from "../../types";
 import { HttpResponseUtils } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
+import { loggedUser } from "../../utils/loggedUser.utils";
 
 export class CreateEstablishmentUseCase
   implements IDefaultUseCase<IHttpResponse, ICreateEstablishmentUseCaseDataIn>
@@ -24,20 +24,21 @@ export class CreateEstablishmentUseCase
     private establishmentRepositoryPort: IEstablishmentRepositoryPort,
     private addressRepositoryPort: IAddressRepositoryPort,
     private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort,
-    private fieldsValidatorPort: IEstablishmentFieldsValidationPort,
+    private fieldsValidatorPort: IEstablishmentFieldsValidationPort
   ) {}
 
   async execute(
     data: ICreateEstablishmentUseCaseDataIn
   ): Promise<IHttpResponse<IEstablishmentEntity>> {
     try {
-      this.fieldsValidatorPort.create(data);
+      const validatedFields = this.fieldsValidatorPort.create(data);
 
-      const { address, workingTime, ...establishmentData } = data;
+      const { address, workingTime, ...establishmentData } = validatedFields;
 
       const newEstablishmentData: ICreateEstablishmentRepositoryDataIn = {
         ...establishmentData,
         id: randomUUID(),
+        user_id: loggedUser.user!.id,
       };
 
       const establishment = await this.establishmentRepositoryPort.create(

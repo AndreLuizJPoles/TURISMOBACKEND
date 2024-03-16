@@ -14,9 +14,9 @@ export class GetUserByEmailUseCase
 
   async execute(email: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      this.fieldsValidatorPort.getByEmail(email);
+      const validatedEmail = this.fieldsValidatorPort.getByEmail(email);
 
-      const user = await this.userRepositoryPort.getByEmail(email);
+      const user = await this.userRepositoryPort.getByEmail(validatedEmail);
 
       if (!user) {
         return HttpResponseUtils.notFoundResponse();

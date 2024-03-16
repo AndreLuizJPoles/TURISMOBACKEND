@@ -9,35 +9,43 @@ import {
 export class UserAPIFieldsValidationAdapter
   implements IUserFieldsValidationPort
 {
-  delete(id: string): void | Error {
+  delete(id: string): string {
     const userSchema = zod.string().uuid("O ID informado não é válido.");
 
-    userSchema.parse(id);
+    const parsedUserSchema = userSchema.parse(id);
+
+    return parsedUserSchema;
   }
 
-  getByEmail(email: string): void | Error {
+  getByEmail(email: string): string {
     const userSchema = zod.string().email("O email digitado não é válido.");
 
-    userSchema.parse(email);
+    const parsedUserSchema = userSchema.parse(email);
+
+    return parsedUserSchema;
   }
 
-  getById(id: string): void | Error {
+  getById(id: string): string {
     const userSchema = zod.string().uuid("O ID informado não é válido.");
 
-    userSchema.parse(id);
+    const parsedUserSchema = userSchema.parse(id);
+
+    return parsedUserSchema;
   }
 
-  login(data: ILoginUseCaseDataIn): void | Error {
+  login(data: ILoginUseCaseDataIn): ILoginUseCaseDataIn {
     const userSchema = zod.object({
       email: zod.string().email({
         message: "O email digitado não é válido.",
       }),
     });
 
-    userSchema.parse(data);
+    const parsedUserSchema = userSchema.parse(data);
+
+    return { ...parsedUserSchema, password: data.password };
   }
 
-  create(data: ICreateUserUseCaseDataIn): void | Error {
+  create(data: ICreateUserUseCaseDataIn): ICreateUserUseCaseDataIn {
     const birthdate = new Date(data.birthdate);
 
     const userData: ICreateUserUseCaseDataIn = {
@@ -45,7 +53,7 @@ export class UserAPIFieldsValidationAdapter
       birthdate,
     };
 
-    const userSchema = zod.object({
+    const userSchema = zod.strictObject({
       name: zod.string(),
       email: zod.string().email(),
       password: zod.string().min(8, {
@@ -57,16 +65,18 @@ export class UserAPIFieldsValidationAdapter
       }),
     });
 
-    userSchema.parse(userData);
+    const parsedUserSchema = userSchema.parse(userData);
+
+    return parsedUserSchema;
   }
-  update(data: IUpdateUserUseCaseDataIn): void | Error {
+  update(data: IUpdateUserUseCaseDataIn): IUpdateUserUseCaseDataIn {
     const userData = data;
 
     if (data.birthdate) {
       userData.birthdate = new Date(data.birthdate);
     }
 
-    const userSchema = zod.object({
+    const userSchema = zod.strictObject({
       id: zod.string().uuid("O ID informado não é válido."),
       name: zod.string().optional(),
       gender: zod
@@ -87,6 +97,8 @@ export class UserAPIFieldsValidationAdapter
         .optional(),
     });
 
-    userSchema.parse(userData);
+    const parsedUserSchema = userSchema.parse(userData);
+
+    return parsedUserSchema;
   }
 }

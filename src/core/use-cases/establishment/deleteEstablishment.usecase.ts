@@ -17,9 +17,9 @@ export class DeleteEstablishmentUseCase
 
   async execute(id: string): Promise<IHttpResponse<IEstablishmentEntity>> {
     try {
-      this.fieldsValidatorPort.delete(id);
+      const validatedId = this.fieldsValidatorPort.delete(id);
 
-      const establishment = await this.establishmentRepositoryPort.delete(id);
+      const establishment = await this.establishmentRepositoryPort.delete(validatedId);
 
       if (!establishment) {
         return HttpResponseUtils.notFoundResponse();

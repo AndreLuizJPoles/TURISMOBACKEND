@@ -9,8 +9,10 @@ import zod from "zod";
 export class EstablishmentAPIFieldsValidationAdapter
   implements IEstablishmentFieldsValidationPort
 {
-  create(data: ICreateEstablishmentUseCaseDataIn): void | Error {
-    const establishmentSchema = zod.object({
+  create(
+    data: ICreateEstablishmentUseCaseDataIn
+  ): ICreateEstablishmentUseCaseDataIn {
+    const establishmentSchema = zod.strictObject({
       name: zod.string(),
       cnpj: zod.string().length(14, {
         message: "O CNPJ informado deve conter 14 caracteres.",
@@ -21,10 +23,7 @@ export class EstablishmentAPIFieldsValidationAdapter
       category_id: zod.string().uuid({
         message: "A categoria informada não é valida.",
       }),
-      user_id: zod.string().uuid({
-        message: "O usuário informado não é valido.",
-      }),
-      address: zod.object(
+      address: zod.strictObject(
         {
           city: zod.string(),
           street: zod.string(),
@@ -39,7 +38,7 @@ export class EstablishmentAPIFieldsValidationAdapter
           required_error: "Os dados de endereço não foram informados.",
         }
       ),
-      workingTime: zod.object(
+      workingTime: zod.strictObject(
         {
           open_on_sunday: zod.boolean(),
           open_on_monday: zod.boolean(),
@@ -57,92 +56,110 @@ export class EstablishmentAPIFieldsValidationAdapter
       ),
     });
 
-    establishmentSchema.parse(data);
+    const parsedEstablishmentSchema = establishmentSchema.parse(data);
+
+    return parsedEstablishmentSchema;
   }
 
-  update(data: IUpdateEstablishmentUseCaseDataIn): void | Error {
+  update(
+    data: IUpdateEstablishmentUseCaseDataIn
+  ): IUpdateEstablishmentUseCaseDataIn {
     const { address, workingTime, ...establishment } = data;
 
-    const establishmentSchema = zod.object({
-      name: zod.string().optional(),
-      cnpj: zod
-        .string()
-        .length(14, {
-          message: "O CNPJ informado deve conter 14 caracteres.",
-        })
-        .optional(),
-      description: zod.string().optional(),
-      picture_url: zod.string().optional(),
-      background_picture_url: zod.string().optional(),
-      category_id: zod
-        .string()
-        .uuid({
-          message: "A categoria informada não é valida.",
-        })
-        .optional(),
-      address: zod
-        .object({
-          city: zod.string().optional(),
-          street: zod.string().optional(),
-          number: zod
-            .number()
-            .int({
-              message: "O número do endereço deve ser inteiro.",
-            })
-            .optional(),
-          neighborhood: zod.string().optional(),
-          complement: zod.string().optional().optional(),
-          zip_code: zod.string().optional(),
-        })
-        .optional(),
-      workingTime: zod
-        .object({
-          open_on_sunday: zod.boolean().optional(),
-          open_on_monday: zod.boolean().optional(),
-          open_on_tuesday: zod.boolean().optional(),
-          open_on_wednesday: zod.boolean().optional(),
-          open_on_thursday: zod.boolean().optional(),
-          open_on_friday: zod.boolean().optional(),
-          opening_time: zod.string().optional(),
-          closing_time: zod.string().optional(),
-        })
-        .optional(),
-    });
+    const establishmentSchema = zod.strictObject(
+      {
+        id: zod.string().uuid({
+          message: "O estabelecimento informado não é valido.",
+        }),
+        name: zod.string().optional(),
+        cnpj: zod
+          .string()
+          .length(14, {
+            message: "O CNPJ informado deve conter 14 caracteres.",
+          })
+          .optional(),
+        description: zod.string().optional(),
+        picture_url: zod.string().optional(),
+        background_picture_url: zod.string().optional(),
+        category_id: zod
+          .string()
+          .uuid({
+            message: "A categoria informada não é valida.",
+          })
+          .optional(),
+        address: zod
+          .strictObject({
+            id: zod.string().uuid({
+              message: "O endereço é inválido.",
+            }),
+            city: zod.string().optional(),
+            street: zod.string().optional(),
+            number: zod
+              .number()
+              .int({
+                message: "O número do endereço deve ser inteiro.",
+              })
+              .optional(),
+            neighborhood: zod.string().optional(),
+            complement: zod.string().optional().optional(),
+            zip_code: zod.string().optional(),
+          })
+          .optional(),
+        workingTime: zod
+          .strictObject({
+            id: zod.string().uuid({
+              message: "O horário de funcionamento é inválido.",
+            }),
+            open_on_sunday: zod.boolean().optional(),
+            open_on_monday: zod.boolean().optional(),
+            open_on_tuesday: zod.boolean().optional(),
+            open_on_wednesday: zod.boolean().optional(),
+            open_on_thursday: zod.boolean().optional(),
+            open_on_friday: zod.boolean().optional(),
+            opening_time: zod.string().optional(),
+            closing_time: zod.string().optional(),
+          })
+          .optional(),
+      },
+      {
+        description: "Campos não permitidos foram informados",
+      }
+    );
 
-    establishmentSchema.parse(establishment);
+    const parsedEstablishmentSchema = establishmentSchema.parse(establishment);
+
+    return parsedEstablishmentSchema;
   }
 
-  getById(id: string): void | Error {
+  getById(id: string): string {
     const establishmentSchema = zod
       .string()
       .uuid("O ID informado não é válido.");
 
-    establishmentSchema.parse(id);
+    const parsedEstablishmentSchema = establishmentSchema.parse(id);
+
+    return parsedEstablishmentSchema;
   }
 
-  delete(id: string): void | Error {
+  delete(id: string): string {
     const establishmentSchema = zod
       .string()
       .uuid("O ID informado não é válido.");
 
-    establishmentSchema.parse(id);
+    const parsedEstablishmentSchema = establishmentSchema.parse(id);
+
+    return parsedEstablishmentSchema;
   }
 
-  login(data: ILoginUseCaseDataIn): void | Error {
-    const establishmentSchema = zod.object({
+  login(data: ILoginUseCaseDataIn) {
+    const establishmentSchema = zod.strictObject({
       email: zod.string().email({
         message: "O email digitado não é válido.",
       }),
     });
 
-    establishmentSchema.parse(data);
-  }
+    const parsedEstablishmentSchema = establishmentSchema.parse(data);
 
-  getByUserId(user_id: string): void | Error {
-    const establishmentSchema = zod.string().uuid({
-      message: "O usuário informado não é valido.",
-    });
-
-    establishmentSchema.parse(user_id);
+    return { parsedEstablishmentSchema, password: data.password };
   }
 }
