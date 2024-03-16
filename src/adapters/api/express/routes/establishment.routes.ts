@@ -1,5 +1,8 @@
 import { Request, Response, Router } from "express";
-import { APIsAccessControlMiddleware } from "../middlewares";
+import {
+  APIsAccessControlMiddleware,
+  canManipulateEstablishmentMiddleware,
+} from "../middlewares";
 import { IRole } from "../../../../core/types";
 import { establishmentAssembler } from "../../../assembler/establishment.assembler";
 
@@ -7,24 +10,15 @@ export const establishmentRouter = Router();
 
 const { establishmentController } = establishmentAssembler();
 
-establishmentRouter.get(
-  "/",
-  async (request: Request, response: Response) => {
-    const { status, ...data } =
-      await establishmentController.getAllEstablishments();
+establishmentRouter.get("/", async (request: Request, response: Response) => {
+  const { status, ...data } =
+    await establishmentController.getAllEstablishments();
 
-    return response.status(status).json(data);
-  }
-);
+  return response.status(status).json(data);
+});
 
 establishmentRouter.get(
   "/:id",
-  APIsAccessControlMiddleware.authentication,
-  APIsAccessControlMiddleware.authorization({
-    action: "read",
-    resource: "establishment",
-    roles: [IRole.ADMIN, IRole.USER],
-  }),
   async (request: Request, response: Response) => {
     const { id } = request.params;
 
@@ -35,15 +29,23 @@ establishmentRouter.get(
   }
 );
 
-establishmentRouter.post("/", async (request: Request, response: Response) => {
-  const establishmentData = request.body;
+establishmentRouter.post(
+  "/",
+  APIsAccessControlMiddleware.authentication,
+  APIsAccessControlMiddleware.authorization({
+    action: "create",
+    resource: "establishment",
+    roles: [IRole.ADMIN, IRole.USER],
+  }),
+  async (request: Request, response: Response) => {
+    const establishmentData = request.body;
 
-  const { status, ...data } = await establishmentController.createEstablishment(
-    establishmentData
-  );
+    const { status, ...data } =
+      await establishmentController.createEstablishment(establishmentData);
 
-  return response.status(status).json(data);
-});
+    return response.status(status).json(data);
+  }
+);
 
 establishmentRouter.put(
   "/",
@@ -53,6 +55,7 @@ establishmentRouter.put(
     resource: "establishment",
     roles: [IRole.USER],
   }),
+  canManipulateEstablishmentMiddleware,
   async (request: Request, response: Response) => {
     const establishmentData = request.body;
 
@@ -71,6 +74,7 @@ establishmentRouter.delete(
     resource: "establishment",
     roles: [IRole.USER],
   }),
+  canManipulateEstablishmentMiddleware,
   async (request: Request, response: Response) => {
     const { id } = request.body;
 
