@@ -52,7 +52,7 @@ model Establishment {
   password               String
   cnpj                   String
   description            String
-  status                 Boolean?               @default(true)
+  status                 Boolean?              @default(true)
   picture_url            String
   background_picture_url String?
   category               EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -82,8 +82,8 @@ model EstablishmentContact {
 
 model EstablishmentWorkingTime {
   id                String        @id
-  opening_time      DateTime      @db.Time()
-  closing_time      DateTime      @db.Time()
+  opening_time      String
+  closing_time      String
   establishment     Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   establishment_id  String        @unique
   open_on_sunday    Boolean
