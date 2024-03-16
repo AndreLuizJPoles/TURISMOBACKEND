@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { userAssembler } from "../../../assembler";
-import { IRole } from "../../../../core/types";
+import { userAssembler, establishmentAssembler } from "../../../assembler";
 import { IAuthorizationParameters, IPermission } from "../../../types";
 
 const { userRepository, jwtTokenGenerator } = userAssembler();
+const { establishmentRepository } = establishmentAssembler()
 
 const permissions: IPermission = {
   ADMIN: {
@@ -42,16 +42,23 @@ export class APIsAccessControlMiddleware {
       });
     }
 
-    const user = await userRepository.getById(decodeToken.id);
+    const userExists =
+      decodeToken.role === "USER"
+        ? await userRepository.getById(decodeToken.id)
+        : null;
+    const establishmentExists =
+      decodeToken.role === "ESTABLISHMENT"
+        ? await establishmentRepository.getById(decodeToken.id)
+        : null;
 
-    if (!user) {
+    if (!userExists && !establishmentExists) {
       return response.status(404).json({
         message: "Ops! Dados não encontrados.",
       });
     }
 
     request.user = {
-      user,
+      user: userExists! || establishmentExists!,
       role: decodeToken.role,
     };
 

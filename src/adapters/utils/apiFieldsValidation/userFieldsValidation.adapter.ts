@@ -2,6 +2,7 @@ import { IUserFieldsValidationPort } from "../../../core/ports/fieldsValidation"
 import zod from "zod";
 import {
   ICreateUserUseCaseDataIn,
+  ILoginUseCaseDataIn,
   IUpdateUserUseCaseDataIn,
 } from "../../../core/types";
 
@@ -26,11 +27,10 @@ export class UserAPIFieldsValidationAdapter
     userSchema.parse(id);
   }
 
-  login<PayloadDataType>(data: PayloadDataType): void | Error {
+  login(data: ILoginUseCaseDataIn): void | Error {
     const userSchema = zod.object({
-      email: zod.string().email(),
-      password: zod.string().min(8, {
-        message: "Sua senha deve ter pelo menos 8 caracteres.",
+      email: zod.string().email({
+        message: "O email digitado não é válido.",
       }),
     });
 

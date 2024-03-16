@@ -34,7 +34,6 @@ export class PasswordHashAdapter implements IPasswordHashPort {
 
       return isPasswordValid;
     } catch (error: any) {
-      console.log(error)
       throw new Error(error);
     }
   }

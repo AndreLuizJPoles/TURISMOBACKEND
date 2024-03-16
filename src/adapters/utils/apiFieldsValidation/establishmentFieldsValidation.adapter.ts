@@ -1,6 +1,7 @@
 import { IEstablishmentFieldsValidationPort } from "../../../core/ports";
 import {
   ICreateEstablishmentUseCaseDataIn,
+  ILoginUseCaseDataIn,
   IUpdateEstablishmentUseCaseDataIn,
 } from "../../../core/types";
 import zod from "zod";
@@ -50,7 +51,7 @@ export class EstablishmentAPIFieldsValidationAdapter
           open_on_thursday: zod.boolean(),
           open_on_friday: zod.boolean(),
           opening_time: zod.string(),
-          closing_time: zod.string()
+          closing_time: zod.string(),
         },
         {
           required_error:
@@ -66,26 +67,26 @@ export class EstablishmentAPIFieldsValidationAdapter
     const { address, workingTime, ...establishment } = data;
 
     const establishmentSchema = zod.object({
-      name: zod.string(),
+      name: zod.string().optional(),
       cnpj: zod.string().length(14, {
         message: "O CNPJ informado deve conter 14 caracteres.",
-      }),
-      description: zod.string(),
-      picture_url: zod.string(),
+      }).optional(),
+      description: zod.string().optional(),
+      picture_url: zod.string().optional(),
       background_picture_url: zod.string().optional(),
       category_id: zod.string().uuid({
         message: "A categoria informada não é valida.",
-      }),
+      }).optional(),
       address: zod
         .object({
-          city: zod.string(),
-          street: zod.string(),
+          city: zod.string().optional(),
+          street: zod.string().optional(),
           number: zod.number().int({
             message: "O número do endereço deve ser inteiro.",
-          }),
-          neighborhood: zod.string(),
-          complement: zod.string().optional(),
-          zip_code: zod.string(),
+          }).optional(),
+          neighborhood: zod.string().optional(),
+          complement: zod.string().optional().optional(),
+          zip_code: zod.string().optional(),
         })
         .optional(),
       workingTime: zod
@@ -97,7 +98,7 @@ export class EstablishmentAPIFieldsValidationAdapter
           open_on_thursday: zod.boolean().optional(),
           open_on_friday: zod.boolean().optional(),
           opening_time: zod.string().optional(),
-          closing_time: zod.string().optional()
+          closing_time: zod.string().optional(),
         })
         .optional(),
     });
@@ -119,5 +120,15 @@ export class EstablishmentAPIFieldsValidationAdapter
       .uuid("O ID informado não é válido.");
 
     establishmentSchema.parse(id);
+  }
+
+  login(data: ILoginUseCaseDataIn): void | Error {
+    const establishmentSchema = zod.object({
+      email: zod.string().email({
+        message: "O email digitado não é válido.",
+      }),
+    });
+
+    establishmentSchema.parse(data);
   }
 }

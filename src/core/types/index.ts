@@ -3,5 +3,6 @@ export * from "./httpResponse.types";
 export * from "./jwtTokenGenerator.types";
 export * from "./role.types";
 export * from "./address.types";
-export * from './establishment.types'
-export * from './establishmentWorkingTime.types'
+export * from "./establishment.types";
+export * from "./establishmentWorkingTime.types";
+export * from "./generalTypes.types";

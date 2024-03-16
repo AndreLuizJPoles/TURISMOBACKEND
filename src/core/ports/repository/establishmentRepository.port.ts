@@ -12,4 +12,5 @@ export interface IEstablishmentRepositoryPort
     IUpdateEstablishmentRepositoryDataIn
   > {
   getById: (id: string) => Promise<IEstablishmentEntity | null>;
+  getByEmail: (email: string) => Promise<IEstablishmentEntity | null>
 }

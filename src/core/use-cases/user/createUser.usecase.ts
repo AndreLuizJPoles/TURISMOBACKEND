@@ -29,11 +29,11 @@ export class CreateUserUseCase
       this.fieldsValidatorPort.create(data);
 
       const id = crypto.randomUUID();
-      const hashed_password = await this.passwordHashPort.hash(data.password);
+      const hashedPassword = await this.passwordHashPort.hash(data.password);
 
       const user_repository_data: ICreateUserRepositoryDataIn = {
         ...data,
-        password: hashed_password,
+        password: hashedPassword,
         id,
         birthdate: new Date(data.birthdate),
       };

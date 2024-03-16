@@ -38,8 +38,3 @@ export interface IUserUseCases {
   deleteUser: DeleteUserUseCase;
   loginUser: LoginUserUseCase;
 }
-
-export interface ILoginUseCaseDataIn {
-  email: string;
-  password: string;
-}

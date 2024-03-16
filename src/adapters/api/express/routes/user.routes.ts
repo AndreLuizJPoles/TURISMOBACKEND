@@ -81,7 +81,7 @@ userRouter.delete(
     roles: [IRole.ADMIN, IRole.USER],
   }),
   async (request: Request, response: Response) => {
-    const id = request.body;
+    const { id } = request.body;
 
     const { status, ...data } = await userController.deleteUser(id);
 
