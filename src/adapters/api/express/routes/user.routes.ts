@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { userAssembler } from "../../../assembler";
 import { APIsAccessControlMiddleware } from "../middlewares";
 import { IRole } from "../../../../core/types";
+import { canManipulateUserMiddleware } from "../middlewares/canManipulateUser.middleware";
 
 export const userRouter = Router();
 
@@ -63,6 +64,7 @@ userRouter.put(
     resource: "user",
     roles: [IRole.ADMIN, IRole.USER],
   }),
+  canManipulateUserMiddleware,
   async (request: Request, response: Response) => {
     const userData = request.body;
 
@@ -80,6 +82,7 @@ userRouter.delete(
     resource: "user",
     roles: [IRole.ADMIN, IRole.USER],
   }),
+  canManipulateUserMiddleware,
   async (request: Request, response: Response) => {
     const { id } = request.body;
 
