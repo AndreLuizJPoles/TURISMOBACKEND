@@ -9,7 +9,6 @@ export const canManipulateUserMiddleware = async (
   const userId = request.body.id;
   const loggedUserId = loggedUser.user?.id;
 
-  console.log(loggedUser)
   if (userId !== loggedUserId) {
     return response.status(401).json({
       message: "Ops! Ação não autorizada",
