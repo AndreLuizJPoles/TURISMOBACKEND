@@ -7,7 +7,7 @@ export interface IEstablishmentEntity {
   description: string;
   status?: boolean;
   picture_url: string;
-  background_picture_url?: string;
+  background_picture_url?: string | null;
   category_id: string;
   created_at: Date;
   updated_at: Date;

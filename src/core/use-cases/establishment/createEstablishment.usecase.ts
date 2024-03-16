@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { IEstablishmentEntity } from "../../entities";
 import {
   IAddressRepositoryPort,
+  IEstablishmentFieldsValidationPort,
   IEstablishmentRepositoryPort,
   IEstablishmentWorkingTimeRepositoryPort,
 } from "../../ports";
@@ -21,13 +22,16 @@ export class CreateEstablishmentUseCase
   constructor(
     private establishmentRepositoryPort: IEstablishmentRepositoryPort,
     private addressRepositoryPort: IAddressRepositoryPort,
-    private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort
+    private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort,
+    private fieldsValidatorPort: IEstablishmentFieldsValidationPort
   ) {}
 
   async execute(
     data: ICreateEstablishmentUseCaseDataIn
   ): Promise<IHttpResponse<IEstablishmentEntity>> {
     try {
+      this.fieldsValidatorPort.create(data);
+
       const { address, workingTime, ...establishmentData } = data;
 
       const newEstablishmentData: ICreateEstablishmentRepositoryDataIn = {

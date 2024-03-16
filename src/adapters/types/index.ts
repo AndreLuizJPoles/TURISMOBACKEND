@@ -1,2 +1,3 @@
 export * from "./user.types";
-export * from "./permission.type";
+export * from "./permission.types";
+export * from "./establishment.types";

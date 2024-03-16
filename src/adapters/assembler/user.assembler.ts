@@ -11,9 +11,11 @@ import {
 import { UserController } from "../api/express/controllers";
 import { UserRepositoryAdapter } from "../database/prisma";
 import { IUserAssembler } from "../types";
-import { UserAPIFieldsValidationAdapter } from "../utils/apiFieldsValidation/userFieldsValidation.adapter";
-import { JwtTokenGeneratorAdapter } from "../utils/jwtTokenGenerator.adapter";
-import { PasswordHashAdapter } from "../utils/passwordHash.adapter";
+import {
+  UserAPIFieldsValidationAdapter,
+  JwtTokenGeneratorAdapter,
+  PasswordHashAdapter,
+} from "../utils";
 
 export const userAssembler = (): IUserAssembler => {
   const userRepository = new UserRepositoryAdapter();

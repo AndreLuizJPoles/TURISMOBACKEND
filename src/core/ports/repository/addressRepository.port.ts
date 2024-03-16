@@ -10,4 +10,6 @@ export interface IAddressRepositoryPort
     IAddressEntity,
     ICreateAddressRepositoryDataIn,
     IUpdateAddressRepositoryDataIn
-  > {}
+  > {
+  getById: (id: string) => Promise<IAddressEntity | null>;
+}

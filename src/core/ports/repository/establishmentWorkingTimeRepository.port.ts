@@ -10,4 +10,6 @@ export interface IEstablishmentWorkingTimeRepositoryPort
     IEstablishmentWorkingTimeEntity,
     ICreateEstablishmentWorkingTimeRepositoryDataIn,
     IUpdateEstablishmentWorkingTimeRepositoryDataIn
-  > {}
+  > {
+  getById: (id: string) => Promise<IEstablishmentWorkingTimeEntity | null>;
+}

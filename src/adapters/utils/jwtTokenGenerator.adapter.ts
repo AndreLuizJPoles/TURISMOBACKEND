@@ -1,5 +1,5 @@
 import { IJwtTokenGeneratorPort } from "../../core/ports";
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import {
   IDecodeTokenDataReturn,
   IGenerateTokenDataType,

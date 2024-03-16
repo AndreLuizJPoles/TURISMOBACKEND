@@ -4,10 +4,10 @@ export interface IAddressEntity {
   street: string;
   number: number;
   neighborhood: string;
-  complement?: string;
+  complement?: string | null;
   zip_code: string;
-  user_id?: string;
-  establishment_id?: string;
+  user_id?: string | null;
+  establishment_id?: string | null;
   created_at: Date;
   updated_at: Date;
 }

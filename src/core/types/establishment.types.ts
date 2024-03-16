@@ -1,10 +1,23 @@
 import { IEstablishmentEntity } from "../entities";
-import { ICreateAddressUseCaseDataIn, IUpdateAddressUseCaseDataIn } from "./address.types";
-import { ICreateEstablishmentWorkingTimeUseCaseDataIn, IUpdateEstablishmentWorkingTimeUseCaseDataIn } from "./establishmentWorkingTime.types";
+import {
+  CreateEstablishmentUseCase,
+  DeleteEstablishmentUseCase,
+  GetAllEstablishmentsUseCase,
+  GetEstablishmentByIdUseCase,
+  UpdateEstablishmentUseCase,
+} from "../use-cases/establishment";
+import {
+  ICreateAddressUseCaseDataIn,
+  IUpdateAddressUseCaseDataIn,
+} from "./address.types";
+import {
+  ICreateEstablishmentWorkingTimeUseCaseDataIn,
+  IUpdateEstablishmentWorkingTimeUseCaseDataIn,
+} from "./establishmentWorkingTime.types";
 
 export type ICreateEstablishmentRepositoryDataIn = Omit<
   IEstablishmentEntity,
-  "created_at" | "updated_at"
+  "created_at" | "updated_at" | "status"
 >;
 
 export type IUpdateEstablishmentRepositoryDataIn = Partial<
@@ -12,7 +25,7 @@ export type IUpdateEstablishmentRepositoryDataIn = Partial<
 >;
 
 export interface ICreateEstablishmentUseCaseDataIn
-  extends Omit<ICreateEstablishmentRepositoryDataIn, "id"> {
+  extends Omit<ICreateEstablishmentRepositoryDataIn, "id" | "status"> {
   address: Omit<ICreateAddressUseCaseDataIn, "establishment_id" | "user_id">;
   workingTime: Omit<
     ICreateEstablishmentWorkingTimeUseCaseDataIn,
@@ -27,5 +40,13 @@ export interface IUpdateEstablishmentUseCaseDataIn
     IUpdateEstablishmentWorkingTimeUseCaseDataIn,
     "establishment_id"
   >;
-  id: string
+  id: string;
+}
+
+export interface IEstablishmentUseCases {
+  getAllEstablishments: GetAllEstablishmentsUseCase;
+  getEstablishmentById: GetEstablishmentByIdUseCase;
+  createEstablishment: CreateEstablishmentUseCase;
+  updateEstablishment: UpdateEstablishmentUseCase;
+  deleteEstablishment: DeleteEstablishmentUseCase;
 }

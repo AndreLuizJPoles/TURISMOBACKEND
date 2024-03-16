@@ -1,6 +1,7 @@
 import { IEstablishmentEntity } from "../../entities";
 import {
   IAddressRepositoryPort,
+  IEstablishmentFieldsValidationPort,
   IEstablishmentRepositoryPort,
   IEstablishmentWorkingTimeRepositoryPort,
 } from "../../ports";
@@ -14,13 +15,16 @@ export class UpdateEstablishmentUseCase
   constructor(
     private establishmentRepositoryPort: IEstablishmentRepositoryPort,
     private addressRepositoryPort: IAddressRepositoryPort,
-    private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort
+    private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort,
+    private fieldsValidatorPort: IEstablishmentFieldsValidationPort
   ) {}
 
   async execute(
     data: IUpdateEstablishmentUseCaseDataIn
   ): Promise<IHttpResponse<IEstablishmentEntity>> {
     try {
+      this.fieldsValidatorPort.update(data);
+
       const { address, workingTime, id, ...establishmentData } = data;
 
       const establishment = await this.establishmentRepositoryPort.update(

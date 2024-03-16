@@ -12,10 +12,11 @@ export type IUpdateEstablishmentWorkingTimeRepositoryDataIn = Partial<
   >
 >;
 
-export type ICreateEstablishmentWorkingTimeUseCaseDataIn = Omit<
-  ICreateEstablishmentWorkingTimeRepositoryDataIn,
-  "id" | "establishment_id"
->;
+export interface ICreateEstablishmentWorkingTimeUseCaseDataIn
+  extends Omit<
+    ICreateEstablishmentWorkingTimeRepositoryDataIn,
+    "id" | "establishment_id"
+  > {}
 
 export interface IUpdateEstablishmentWorkingTimeUseCaseDataIn
   extends Omit<
