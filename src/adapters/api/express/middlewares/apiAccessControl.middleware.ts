@@ -8,12 +8,15 @@ const { userRepository, jwtTokenGenerator } = userAssembler();
 const permissions: IPermission = {
   ADMIN: {
     user: ["update", "delete", "read"],
+    establishment: ["read"],
   },
   ESTABLISHMENT: {
     user: ["read"],
+    establishment: ["update", "delete", "read"],
   },
   USER: {
     user: ["update", "delete", "read"],
+    establishment: ["read"],
   },
 };
 
@@ -68,7 +71,7 @@ export class APIsAccessControlMiddleware {
       const { role } = request.user;
 
       const resourceExists = permissions[role][resource];
-      const actionExists = permissions[role][resource].includes(action);
+      const actionExists = permissions[role][resource]?.includes(action);
 
       if (!resourceExists || !actionExists) {
         return response.status(401).json({
