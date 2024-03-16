@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { userAssembler } from "../../../assembler";
 import { APIsAccessControlMiddleware } from "../middlewares";
 import { IRole } from "../../../../core/types";
@@ -13,7 +13,7 @@ userRouter.get(
   APIsAccessControlMiddleware.authorization({
     action: "read",
     resource: "user",
-    roles: [IRole.ADMIN, IRole.ESTABLISHMENT, IRole.USER],
+    roles: [IRole.ADMIN, IRole.USER],
   }),
   async (request: Request, response: Response) => {
     if (request.query?.email) {
@@ -36,7 +36,7 @@ userRouter.get(
   APIsAccessControlMiddleware.authorization({
     action: "read",
     resource: "user",
-    roles: [IRole.ADMIN, IRole.ESTABLISHMENT, IRole.USER],
+    roles: [IRole.ADMIN, IRole.USER],
   }),
   async (request: Request, response: Response) => {
     const { id } = request.params;
