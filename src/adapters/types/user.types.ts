@@ -1,4 +1,4 @@
-import { IEstablishmentEntity, IUserEntity } from "../../core/entities";
+import { IUserEntity } from "../../core/entities";
 import { UserController } from "../api/express/controllers";
 import { UserRepositoryAdapter } from "../database/prisma";
 import {
@@ -17,6 +17,6 @@ export interface IUserAssembler {
 }
 
 export interface IUserExpressRequest {
-  user: IUserEntity | IEstablishmentEntity;
+  user: IUserEntity;
   role: IRole;
 }

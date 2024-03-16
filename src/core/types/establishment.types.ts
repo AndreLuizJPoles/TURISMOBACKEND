@@ -25,7 +25,10 @@ export type IUpdateEstablishmentRepositoryDataIn = Partial<
 >;
 
 export interface ICreateEstablishmentUseCaseDataIn
-  extends Omit<ICreateEstablishmentRepositoryDataIn, "id" | "status"> {
+  extends Omit<
+    ICreateEstablishmentRepositoryDataIn,
+    "id" | "status" | "user_id"
+  > {
   address: Omit<ICreateAddressUseCaseDataIn, "establishment_id" | "user_id">;
   workingTime: Omit<
     ICreateEstablishmentWorkingTimeUseCaseDataIn,
