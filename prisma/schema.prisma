@@ -52,7 +52,7 @@ model Establishment {
   password               String
   cnpj                   String
   description            String
-  status                 Boolean?              @default(true)
+  status                 Boolean               @default(true)
   picture_url            String
   background_picture_url String?
   category               EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
