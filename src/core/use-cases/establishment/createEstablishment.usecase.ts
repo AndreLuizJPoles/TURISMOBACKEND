@@ -25,7 +25,6 @@ export class CreateEstablishmentUseCase
     private addressRepositoryPort: IAddressRepositoryPort,
     private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort,
     private fieldsValidatorPort: IEstablishmentFieldsValidationPort,
-    private passwordHashPort: IPasswordHashPort
   ) {}
 
   async execute(
@@ -36,12 +35,9 @@ export class CreateEstablishmentUseCase
 
       const { address, workingTime, ...establishmentData } = data;
 
-      const hashedPasword = await this.passwordHashPort.hash(establishmentData.password);
-
       const newEstablishmentData: ICreateEstablishmentRepositoryDataIn = {
         ...establishmentData,
         id: randomUUID(),
-        password: hashedPasword
       };
 
       const establishment = await this.establishmentRepositoryPort.create(

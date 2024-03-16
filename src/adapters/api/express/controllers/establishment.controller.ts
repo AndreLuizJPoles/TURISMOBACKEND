@@ -3,7 +3,6 @@ import {
   ICreateEstablishmentUseCaseDataIn,
   IEstablishmentUseCases,
   IHttpResponse,
-  ILoginUseCaseDataIn,
   IUpdateEstablishmentUseCaseDataIn,
 } from "../../../../core/types";
 
@@ -36,11 +35,5 @@ export class EstablishmentController {
     id: string
   ): Promise<IHttpResponse<IEstablishmentEntity>> {
     return this.establishmentUseCases.deleteEstablishment.execute(id);
-  }
-
-  async login(
-    data: ILoginUseCaseDataIn
-  ): Promise<IHttpResponse<IEstablishmentEntity>> {
-    return this.establishmentUseCases.loginEstablishment.execute(data);
   }
 }

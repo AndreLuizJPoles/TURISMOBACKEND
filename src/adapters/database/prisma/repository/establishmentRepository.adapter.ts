@@ -9,20 +9,6 @@ import { prismaClient } from "../prismaClientConfiguration";
 export class EstablishmentRepositoryAdapter
   implements IEstablishmentRepositoryPort
 {
-  async getByEmail(email: string): Promise<IEstablishmentEntity | null> {
-    try {
-      const establishment = await prismaClient.establishment.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      return establishment;
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
   async getById(id: string): Promise<IEstablishmentEntity | null> {
     try {
       const establishment = await prismaClient.establishment.findUnique({

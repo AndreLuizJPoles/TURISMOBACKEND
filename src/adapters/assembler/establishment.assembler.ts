@@ -6,7 +6,6 @@ import {
   GetEstablishmentByIdUseCase,
   UpdateEstablishmentUseCase,
 } from "../../core/use-cases/establishment";
-import { LoginEstablishmentUseCase } from "../../core/use-cases/establishment/loginEstablishment.usecase";
 import { EstablishmentController } from "../api/express/controllers";
 import {
   AddressRepositoryAdapter,
@@ -14,11 +13,7 @@ import {
   EstablishmentWorkingTimeRepositoryAdapter,
 } from "../database/prisma";
 import { IEstablishmentAssembler } from "../types";
-import {
-  EstablishmentAPIFieldsValidationAdapter,
-  JwtTokenGeneratorAdapter,
-  PasswordHashAdapter,
-} from "../utils";
+import { EstablishmentAPIFieldsValidationAdapter } from "../utils";
 
 export const establishmentAssembler = (): IEstablishmentAssembler => {
   const establishmentRepository = new EstablishmentRepositoryAdapter();
@@ -27,16 +22,13 @@ export const establishmentAssembler = (): IEstablishmentAssembler => {
     new EstablishmentWorkingTimeRepositoryAdapter();
   const establishmentFieldsValidator =
     new EstablishmentAPIFieldsValidationAdapter();
-  const passwordHash = new PasswordHashAdapter();
-  const jwtTokenGenerator = new JwtTokenGeneratorAdapter();
 
   const establishmentUseCases: IEstablishmentUseCases = {
     createEstablishment: new CreateEstablishmentUseCase(
       establishmentRepository,
       addressRepository,
       establishmentWorkingTimeRepository,
-      establishmentFieldsValidator,
-      passwordHash
+      establishmentFieldsValidator
     ),
     deleteEstablishment: new DeleteEstablishmentUseCase(
       establishmentRepository,
@@ -55,12 +47,6 @@ export const establishmentAssembler = (): IEstablishmentAssembler => {
       establishmentWorkingTimeRepository,
       establishmentFieldsValidator
     ),
-    loginEstablishment: new LoginEstablishmentUseCase(
-      establishmentRepository,
-      establishmentFieldsValidator,
-      passwordHash,
-      jwtTokenGenerator
-    ),
   };
 
   const establishmentController = new EstablishmentController(
@@ -69,6 +55,6 @@ export const establishmentAssembler = (): IEstablishmentAssembler => {
 
   return {
     establishmentController,
-    establishmentRepository
+    establishmentRepository,
   };
 };

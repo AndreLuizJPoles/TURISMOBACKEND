@@ -9,12 +9,6 @@ const { establishmentController } = establishmentAssembler();
 
 establishmentRouter.get(
   "/",
-  APIsAccessControlMiddleware.authentication,
-  APIsAccessControlMiddleware.authorization({
-    action: "read",
-    resource: "establishment",
-    roles: [IRole.ADMIN, IRole.ESTABLISHMENT, IRole.USER],
-  }),
   async (request: Request, response: Response) => {
     const { status, ...data } =
       await establishmentController.getAllEstablishments();
@@ -29,7 +23,7 @@ establishmentRouter.get(
   APIsAccessControlMiddleware.authorization({
     action: "read",
     resource: "establishment",
-    roles: [IRole.ADMIN, IRole.ESTABLISHMENT, IRole.USER],
+    roles: [IRole.ADMIN, IRole.USER],
   }),
   async (request: Request, response: Response) => {
     const { id } = request.params;
@@ -57,7 +51,7 @@ establishmentRouter.put(
   APIsAccessControlMiddleware.authorization({
     action: "update",
     resource: "establishment",
-    roles: [IRole.ESTABLISHMENT],
+    roles: [IRole.USER],
   }),
   async (request: Request, response: Response) => {
     const establishmentData = request.body;
@@ -75,24 +69,13 @@ establishmentRouter.delete(
   APIsAccessControlMiddleware.authorization({
     action: "delete",
     resource: "establishment",
-    roles: [IRole.ESTABLISHMENT],
+    roles: [IRole.USER],
   }),
   async (request: Request, response: Response) => {
     const { id } = request.body;
 
     const { status, ...data } =
       await establishmentController.deleteEstablishment(id);
-
-    return response.status(status).json(data);
-  }
-);
-
-establishmentRouter.post(
-  "/login",
-  async (request: Request, response: Response) => {
-    const loginData = request.body;
-
-    const { status, ...data } = await establishmentController.login(loginData);
 
     return response.status(status).json(data);
   }

@@ -12,12 +12,6 @@ export class EstablishmentAPIFieldsValidationAdapter
   create(data: ICreateEstablishmentUseCaseDataIn): void | Error {
     const establishmentSchema = zod.object({
       name: zod.string(),
-      email: zod.string().email({
-        message: "Informe um email válido",
-      }),
-      password: zod.string().min(8, {
-        message: "Sua senha deve ter pelo menos 8 caracteres.",
-      }),
       cnpj: zod.string().length(14, {
         message: "O CNPJ informado deve conter 14 caracteres.",
       }),
@@ -26,6 +20,9 @@ export class EstablishmentAPIFieldsValidationAdapter
       background_picture_url: zod.string().optional(),
       category_id: zod.string().uuid({
         message: "A categoria informada não é valida.",
+      }),
+      user_id: zod.string().uuid({
+        message: "O usuário informado não é valido.",
       }),
       address: zod.object(
         {
@@ -68,22 +65,31 @@ export class EstablishmentAPIFieldsValidationAdapter
 
     const establishmentSchema = zod.object({
       name: zod.string().optional(),
-      cnpj: zod.string().length(14, {
-        message: "O CNPJ informado deve conter 14 caracteres.",
-      }).optional(),
+      cnpj: zod
+        .string()
+        .length(14, {
+          message: "O CNPJ informado deve conter 14 caracteres.",
+        })
+        .optional(),
       description: zod.string().optional(),
       picture_url: zod.string().optional(),
       background_picture_url: zod.string().optional(),
-      category_id: zod.string().uuid({
-        message: "A categoria informada não é valida.",
-      }).optional(),
+      category_id: zod
+        .string()
+        .uuid({
+          message: "A categoria informada não é valida.",
+        })
+        .optional(),
       address: zod
         .object({
           city: zod.string().optional(),
           street: zod.string().optional(),
-          number: zod.number().int({
-            message: "O número do endereço deve ser inteiro.",
-          }).optional(),
+          number: zod
+            .number()
+            .int({
+              message: "O número do endereço deve ser inteiro.",
+            })
+            .optional(),
           neighborhood: zod.string().optional(),
           complement: zod.string().optional().optional(),
           zip_code: zod.string().optional(),
@@ -130,5 +136,13 @@ export class EstablishmentAPIFieldsValidationAdapter
     });
 
     establishmentSchema.parse(data);
+  }
+
+  getByUserId(user_id: string): void | Error {
+    const establishmentSchema = zod.string().uuid({
+      message: "O usuário informado não é valido.",
+    });
+
+    establishmentSchema.parse(user_id);
   }
 }

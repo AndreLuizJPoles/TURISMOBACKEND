@@ -6,7 +6,6 @@ import {
   GetEstablishmentByIdUseCase,
   UpdateEstablishmentUseCase,
 } from "../use-cases/establishment";
-import { LoginEstablishmentUseCase } from "../use-cases/establishment/loginEstablishment.usecase";
 import {
   ICreateAddressUseCaseDataIn,
   IUpdateAddressUseCaseDataIn,
@@ -50,5 +49,4 @@ export interface IEstablishmentUseCases {
   createEstablishment: CreateEstablishmentUseCase;
   updateEstablishment: UpdateEstablishmentUseCase;
   deleteEstablishment: DeleteEstablishmentUseCase;
-  loginEstablishment: LoginEstablishmentUseCase;
 }
