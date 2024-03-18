@@ -22,7 +22,6 @@ export class LoginUserUseCase
     try {
       const validatedFields = this.fieldsValidatorPort.login(data);
       
-      
       const { email, password } = validatedFields;
 
       const user = await this.userRepositoryPort.getByEmail(email);
