@@ -10,6 +10,4 @@ export interface IEstablishmentRepositoryPort
     IEstablishmentEntity,
     ICreateEstablishmentRepositoryDataIn,
     IUpdateEstablishmentRepositoryDataIn
-  > {
-  getById: (id: string) => Promise<IEstablishmentEntity | null>;
-}
+  > {}

@@ -4,6 +4,7 @@ export interface IDefaultRepositoryPort<
   UpdateDataType
 > {
   getAll: () => Promise<EntityReturn[]>;
+  getById: () => Promise<EntityReturn | null>;
   create: (data: CreateDataType) => Promise<EntityReturn>;
   update: (id: string, data: UpdateDataType) => Promise<EntityReturn>;
   delete: (id: string) => Promise<EntityReturn>;
