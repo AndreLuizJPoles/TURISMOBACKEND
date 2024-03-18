@@ -107,6 +107,8 @@ model Address {
   neighborhood     String
   complement       String?
   zip_code         String
+  state            String
+  country          String
   user             User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id          String?
   establishment    Establishment? @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)

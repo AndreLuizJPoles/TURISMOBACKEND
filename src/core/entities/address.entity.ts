@@ -6,6 +6,8 @@ export interface IAddressEntity {
   neighborhood: string;
   complement?: string | null;
   zip_code: string;
+  state: string;
+  country: string;
   user_id?: string | null;
   establishment_id?: string | null;
   created_at: Date;

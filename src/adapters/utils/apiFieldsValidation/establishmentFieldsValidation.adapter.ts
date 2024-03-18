@@ -33,6 +33,8 @@ export class EstablishmentAPIFieldsValidationAdapter
           neighborhood: zod.string(),
           complement: zod.string().optional(),
           zip_code: zod.string(),
+          state: zod.string(),
+          country: zod.string(),
         },
         {
           required_error: "Os dados de endereço não foram informados.",
@@ -103,6 +105,8 @@ export class EstablishmentAPIFieldsValidationAdapter
             neighborhood: zod.string().optional(),
             complement: zod.string().optional().optional(),
             zip_code: zod.string().optional(),
+            state: zod.string().optional(),
+            country: zod.string().optional(),
           })
           .optional(),
         workingTime: zod
