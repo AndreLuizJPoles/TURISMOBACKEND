@@ -9,33 +9,22 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model Role {
-  id         String   @id
-  name       String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-
-  users User[]
-
-  @@map("roles")
-}
-
 model User {
-  id           String     @id
+  id           String      @id
   name         String
-  email        String     @unique
-  gender       UserGender
-  cpf          String     @unique
+  email        String      @unique
+  gender       UserGender?
+  cpf          String?     @unique
   picture_url  String
-  phone_number String
-  role         Role       @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  role_id      String
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now()) @updatedAt
+  phone_number String?
+  password     String
+  birthdate    DateTime
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @default(now()) @updatedAt
 
   addresses              Address[]
   comments               Comment[]
@@ -47,7 +36,7 @@ model User {
 model EstablishmentCategory {
   id          String   @id
   name        String
-  description String
+  description String @db.VarChar(500)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
@@ -57,23 +46,25 @@ model EstablishmentCategory {
 }
 
 model Establishment {
-  id           String                @id
-  name         String
-  cnpj         String                @unique
-  description  String
-  opening_time DateTime              @db.Time()
-  closing_time DateTime              @db.Time()
-  opened       Boolean
-  picture_url  String
-  category     EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  category_id  String
-  created_at   DateTime              @default(now())
-  updated_at   DateTime              @default(now()) @updatedAt
+  id                     String                @id
+  name                   String
+  email                  String                @unique
+  password               String
+  cnpj                   String
+  description            String
+  status                 Boolean
+  picture_url            String
+  background_picture_url String?
+  category               EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  category_id            String
+  created_at             DateTime              @default(now())
+  updated_at             DateTime              @default(now()) @updatedAt
 
-  address                Address?
-  comments               Comment[]
-  favoriteEstablishments FavoriteEstablishment[]
-  establishmentContacts  EstablishmentContact[]
+  address                  Address?
+  comments                 Comment[]
+  favoriteEstablishments   FavoriteEstablishment[]
+  establishmentContacts    EstablishmentContact[]
+  establishmentWorkingTime EstablishmentWorkingTime?
 
   @@map("establishments")
 }
@@ -81,13 +72,30 @@ model Establishment {
 model EstablishmentContact {
   id               String        @id
   phone_number     String
-  email            String        @unique
   establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   establishment_id String
   created_at       DateTime      @default(now())
   updated_at       DateTime      @default(now()) @updatedAt
 
   @@map("establishment_contacts")
+}
+
+model EstablishmentWorkingTime {
+  id                String        @id
+  opening_time      DateTime      @db.Time()
+  closing_time      DateTime      @db.Time()
+  establishment     Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment_id  String        @unique
+  open_on_sunday    Boolean
+  open_on_monday    Boolean
+  open_on_tuesday   Boolean
+  open_on_wednesday Boolean
+  open_on_thursday  Boolean
+  open_on_friday    Boolean
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @default(now()) @updatedAt
+
+  @@map("establishment_working_time")
 }
 
 model Address {

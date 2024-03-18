@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/app.ts",
+    "db:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seeds/index.ts"
+  },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/node": "^20.11.25",
+    "@types/node": "^20.11.26",
     "prisma": "^5.10.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
@@ -13,7 +20,11 @@
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
+    "@types/jsonwebtoken": "^9.0.6",
+    "argon2": "^0.40.1",
     "dotenv": "^16.4.5",
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.22.4"
   }
 }
