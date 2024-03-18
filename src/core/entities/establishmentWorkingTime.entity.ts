@@ -9,6 +9,7 @@ export interface IEstablishmentWorkingTimeEntity {
   open_on_wednesday: boolean;
   open_on_thursday: boolean;
   open_on_friday: boolean;
+  open_on_saturday: boolean;
   created_at: Date;
   updated_at: Date;
 }

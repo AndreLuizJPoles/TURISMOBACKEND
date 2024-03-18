@@ -10,7 +10,11 @@ export class UserAPIFieldsValidationAdapter
   implements IUserFieldsValidationPort
 {
   delete(id: string): string {
-    const userSchema = zod.string().uuid("O ID informado não é válido.");
+    const userSchema = zod
+      .string({
+        required_error: "Informe o usuário a ser atualizado.",
+      })
+      .uuid("O ID informado não é válido.");
 
     const parsedUserSchema = userSchema.parse(id);
 
@@ -18,7 +22,11 @@ export class UserAPIFieldsValidationAdapter
   }
 
   getByEmail(email: string): string {
-    const userSchema = zod.string().email("O email digitado não é válido.");
+    const userSchema = zod
+      .string({
+        required_error: "Informe o email a ser buscado.",
+      })
+      .email("O email digitado não é válido.");
 
     const parsedUserSchema = userSchema.parse(email);
 
@@ -26,7 +34,11 @@ export class UserAPIFieldsValidationAdapter
   }
 
   getById(id: string): string {
-    const userSchema = zod.string().uuid("O ID informado não é válido.");
+    const userSchema = zod
+      .string({
+        required_error: "Informe o usuário a ser buscado.",
+      })
+      .uuid("O ID informado não é válido.");
 
     const parsedUserSchema = userSchema.parse(id);
 
@@ -35,9 +47,13 @@ export class UserAPIFieldsValidationAdapter
 
   login(data: ILoginUseCaseDataIn): ILoginUseCaseDataIn {
     const userSchema = zod.object({
-      email: zod.string().email({
-        message: "O email digitado não é válido.",
-      }),
+      email: zod
+        .string({
+          required_error: "Informe um email.",
+        })
+        .email({
+          message: "O email digitado não é válido.",
+        }),
     });
 
     const parsedUserSchema = userSchema.parse(data);
@@ -54,14 +70,24 @@ export class UserAPIFieldsValidationAdapter
     };
 
     const userSchema = zod.strictObject({
-      name: zod.string(),
-      email: zod.string().email(),
-      password: zod.string().min(8, {
-        message: "Sua senha deve ter pelo menos 8 caracteres.",
+      name: zod.string({
+        required_error: "Informe um nome.",
       }),
+      email: zod
+        .string({
+          required_error: "Informe um email.",
+        })
+        .email(),
+      password: zod
+        .string({
+          required_error: "Informe uma senha.",
+        })
+        .min(8, {
+          message: "Sua senha deve ter pelo menos 8 caracteres.",
+        }),
       picture_url: zod.string(),
       birthdate: zod.date({
-        description: "Informe uma data de nascimento válida",
+        required_error: "Informe uma data de nascimento.",
       }),
     });
 
@@ -77,8 +103,17 @@ export class UserAPIFieldsValidationAdapter
     }
 
     const userSchema = zod.strictObject({
-      id: zod.string().uuid("O ID informado não é válido."),
-      name: zod.string().optional(),
+      id: zod
+        .string({
+          required_error: "Informe o usuário a ser atualizado.",
+        })
+        .uuid("O ID informado não é válido."),
+      name: zod
+        .string()
+        .min(1, {
+          message: "Informe um nome válido.",
+        })
+        .optional(),
       gender: zod
         .enum(["male", "female"], {
           description: "Escolha masculino ou feminino.",
@@ -89,7 +124,12 @@ export class UserAPIFieldsValidationAdapter
         .length(11, "O CPF digitado não possui 11 caracteres.")
         .optional(),
       picture_url: zod.string().optional(),
-      phone_number: zod.string().optional(),
+      phone_number: zod
+        .string()
+        .min(1, {
+          message: "Informe um telefone válido.",
+        })
+        .optional(),
       birthdate: zod
         .date({
           description: "Informe uma data de nascimento válida",

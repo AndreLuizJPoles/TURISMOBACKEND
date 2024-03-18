@@ -93,10 +93,11 @@ model EstablishmentWorkingTime {
   open_on_wednesday Boolean
   open_on_thursday  Boolean
   open_on_friday    Boolean
+  open_on_saturday  Boolean
   created_at        DateTime      @default(now())
   updated_at        DateTime      @default(now()) @updatedAt
 
-  @@map("establishment_working_time")
+  @@map("establishments_working_time")
 }
 
 model Address {

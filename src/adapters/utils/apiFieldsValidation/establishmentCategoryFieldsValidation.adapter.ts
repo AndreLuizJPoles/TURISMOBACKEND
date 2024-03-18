@@ -31,7 +31,7 @@ export class EstablishmentCategoryAPIFieldsValidationAdapter
   ): IUpdateEstablishmentCategoryUseCaseDataIn {
     const establishmentCategorySchema = zod.strictObject({
       id: zod.string({
-        required_error: "Por favor, informe a categoria a ser atualizada."
+        required_error: "Informe a categoria a ser atualizada."
       }).uuid({
         message: "Informe uma categoria válida.",
       }),

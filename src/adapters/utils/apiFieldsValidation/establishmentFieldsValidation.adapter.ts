@@ -13,28 +13,95 @@ export class EstablishmentAPIFieldsValidationAdapter
     data: ICreateEstablishmentUseCaseDataIn
   ): ICreateEstablishmentUseCaseDataIn {
     const establishmentSchema = zod.strictObject({
-      name: zod.string(),
-      cnpj: zod.string().length(14, {
-        message: "O CNPJ informado deve conter 14 caracteres.",
-      }),
-      description: zod.string(),
+      name: zod
+        .string({
+          required_error: "Informe um nome.",
+        })
+        .min(1, {
+          message: "Informe um nome válido.",
+        }),
+      cnpj: zod
+        .string({
+          required_error: "Informe um CNPJ.",
+        })
+        .length(14, {
+          message: "O CNPJ informado deve conter 14 caracteres.",
+        }),
+      description: zod
+        .string({
+          required_error: "Informe uma descrição.",
+        })
+        .min(1, {
+          message: "Informe um descrição válida.",
+        }),
       picture_url: zod.string(),
       background_picture_url: zod.string().optional(),
-      category_id: zod.string().uuid({
-        message: "A categoria informada não é valida.",
-      }),
+      category_id: zod
+        .string({
+          required_error: "Informe uma categoria.",
+        })
+        .uuid({
+          message: "A categoria informada não é valida.",
+        }),
       address: zod.strictObject(
         {
-          city: zod.string(),
-          street: zod.string(),
-          number: zod.number().int({
-            message: "O número do endereço deve ser inteiro.",
-          }),
-          neighborhood: zod.string(),
-          complement: zod.string().optional(),
-          zip_code: zod.string(),
-          state: zod.string(),
-          country: zod.string(),
+          city: zod
+            .string({
+              required_error: "Informe uma cidade.",
+            })
+            .min(1, {
+              message: "Informe uma cidade válida.",
+            }),
+          street: zod
+            .string({
+              required_error: "Informe uma rua.",
+            })
+            .min(1, {
+              message: "Informe uma rua válida.",
+            }),
+          number: zod
+            .number({
+              required_error: "Informe um número.",
+            })
+            .int({
+              message: "O número do endereço deve ser inteiro.",
+            }),
+          neighborhood: zod
+            .string({
+              required_error: "Informe um bairro.",
+            })
+            .min(1, {
+              message: "Informe um bairro válido.",
+            }),
+          complement: zod
+            .string({
+              required_error: "Informe um complemento.",
+            })
+            .min(1, {
+              message: "Informe um complemento válido.",
+            })
+            .optional(),
+          zip_code: zod
+            .string({
+              required_error: "Informe um CEP.",
+            })
+            .min(1, {
+              message: "Informe um CEP válido.",
+            }),
+          state: zod
+            .string({
+              required_error: "Informe um estado.",
+            })
+            .min(1, {
+              message: "Informe um estado válido.",
+            }),
+          country: zod
+            .string({
+              required_error: "Informe um país.",
+            })
+            .min(1, {
+              message: "Informe um país válido.",
+            }),
         },
         {
           required_error: "Os dados de endereço não foram informados.",
@@ -42,14 +109,41 @@ export class EstablishmentAPIFieldsValidationAdapter
       ),
       workingTime: zod.strictObject(
         {
-          open_on_sunday: zod.boolean(),
-          open_on_monday: zod.boolean(),
-          open_on_tuesday: zod.boolean(),
-          open_on_wednesday: zod.boolean(),
-          open_on_thursday: zod.boolean(),
-          open_on_friday: zod.boolean(),
-          opening_time: zod.string(),
-          closing_time: zod.string(),
+          open_on_sunday: zod.boolean({
+            required_error: "Informe se abrirá no Domingo.",
+          }),
+          open_on_monday: zod.boolean({
+            required_error: "Informe se abrirá na Segunda-feira.",
+          }),
+          open_on_tuesday: zod.boolean({
+            required_error: "Informe se abrirá na Terça-feira.",
+          }),
+          open_on_wednesday: zod.boolean({
+            required_error: "Informe se abrirá na Quarta-feira.",
+          }),
+          open_on_thursday: zod.boolean({
+            required_error: "Informe se abrirá na Quinta-feira.",
+          }),
+          open_on_friday: zod.boolean({
+            required_error: "Informe se abrirá na Sexta-feira.",
+          }),
+          open_on_saturday: zod.boolean({
+            required_error: "Informe se abrirá no Sábado.",
+          }),
+          opening_time: zod
+            .string({
+              required_error: "Informe um horário de abertura.",
+            })
+            .min(1, {
+              message: "Informe um horário de abertura válido.",
+            }),
+          closing_time: zod
+            .string({
+              required_error: "Informe um horário de fechamento.",
+            })
+            .min(1, {
+              message: "Informe um horário de fechamento válido.",
+            }),
         },
         {
           required_error:
@@ -94,19 +188,70 @@ export class EstablishmentAPIFieldsValidationAdapter
             id: zod.string().uuid({
               message: "O endereço é inválido.",
             }),
-            city: zod.string().optional(),
-            street: zod.string().optional(),
+            city: zod
+              .string({
+                required_error: "Informe uma cidade.",
+              })
+              .min(1, {
+                message: "Informe uma cidade válida.",
+              })
+              .optional(),
+            street: zod
+              .string({
+                required_error: "Informe uma rua.",
+              })
+              .min(1, {
+                message: "Informe uma rua válida.",
+              })
+              .optional(),
             number: zod
-              .number()
+              .number({
+                required_error: "Informe um número.",
+              })
               .int({
                 message: "O número do endereço deve ser inteiro.",
               })
               .optional(),
-            neighborhood: zod.string().optional(),
-            complement: zod.string().optional().optional(),
-            zip_code: zod.string().optional(),
-            state: zod.string().optional(),
-            country: zod.string().optional(),
+            neighborhood: zod
+              .string({
+                required_error: "Informe um bairro.",
+              })
+              .min(1, {
+                message: "Informe um bairro válido.",
+              })
+              .optional(),
+            complement: zod
+              .string({
+                required_error: "Informe um complemento.",
+              })
+              .min(1, {
+                message: "Informe um complemento válido.",
+              })
+              .optional(),
+            zip_code: zod
+              .string({
+                required_error: "Informe um CEP.",
+              })
+              .min(1, {
+                message: "Informe um CEP válido.",
+              })
+              .optional(),
+            state: zod
+              .string({
+                required_error: "Informe um estado.",
+              })
+              .min(1, {
+                message: "Informe um estado válido.",
+              })
+              .optional(),
+            country: zod
+              .string({
+                required_error: "Informe um país.",
+              })
+              .min(1, {
+                message: "Informe um país válido.",
+              })
+              .optional(),
           })
           .optional(),
         workingTime: zod
@@ -137,7 +282,9 @@ export class EstablishmentAPIFieldsValidationAdapter
 
   getById(id: string): string {
     const establishmentSchema = zod
-      .string()
+      .string({
+        required_error: "Informe estabelecimento a ser buscado.",
+      })
       .uuid("O ID informado não é válido.");
 
     const parsedEstablishmentSchema = establishmentSchema.parse(id);
@@ -147,23 +294,13 @@ export class EstablishmentAPIFieldsValidationAdapter
 
   delete(id: string): string {
     const establishmentSchema = zod
-      .string()
+      .string({
+        required_error: "Informe estabelecimento a ser deletado.",
+      })
       .uuid("O ID informado não é válido.");
 
     const parsedEstablishmentSchema = establishmentSchema.parse(id);
 
     return parsedEstablishmentSchema;
-  }
-
-  login(data: ILoginUseCaseDataIn) {
-    const establishmentSchema = zod.strictObject({
-      email: zod.string().email({
-        message: "O email digitado não é válido.",
-      }),
-    });
-
-    const parsedEstablishmentSchema = establishmentSchema.parse(data);
-
-    return { parsedEstablishmentSchema, password: data.password };
   }
 }
