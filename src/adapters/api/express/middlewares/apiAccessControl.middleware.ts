@@ -14,7 +14,7 @@ const permissions: IPermission = {
   USER: {
     user: ["update", "delete", "read"],
     establishment: ["read", "update", "create", "delete"],
-    establishmentCategory: ["read", "create", "update", "delete"],
+    establishmentCategory: ["read"],
   },
 };
 
