@@ -6,3 +6,4 @@ export * from "./address.types";
 export * from "./establishment.types";
 export * from "./establishmentWorkingTime.types";
 export * from "./generalTypes.types";
+export * from "./establishmentCategory.types";

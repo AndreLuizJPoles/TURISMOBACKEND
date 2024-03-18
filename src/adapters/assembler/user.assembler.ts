@@ -11,17 +11,14 @@ import {
 import { UserController } from "../api/express/controllers";
 import { UserRepositoryAdapter } from "../database/prisma";
 import { IUserAssembler } from "../types";
-import {
-  UserAPIFieldsValidationAdapter,
-  JwtTokenGeneratorAdapter,
-  PasswordHashAdapter,
-} from "../utils";
+import { UserAPIFieldsValidationAdapter } from "../utils";
+import { jwtTokenGeneratorAssembler, passwordHashAssembler } from ".";
 
 export const userAssembler = (): IUserAssembler => {
   const userRepository = new UserRepositoryAdapter();
-  const passwordHash = new PasswordHashAdapter();
+  const { passwordHash } = passwordHashAssembler();
   const userFieldsValidator = new UserAPIFieldsValidationAdapter();
-  const jwtTokenGenerator = new JwtTokenGeneratorAdapter();
+  const { jwtTokenGenerator } = jwtTokenGeneratorAssembler();
 
   const userUseCases: IUserUseCases = {
     createUser: new CreateUserUseCase(
@@ -49,9 +46,6 @@ export const userAssembler = (): IUserAssembler => {
 
   return {
     userController,
-    passwordHash,
-    userFieldsValidator,
-    jwtTokenGenerator,
     userRepository,
   };
 };

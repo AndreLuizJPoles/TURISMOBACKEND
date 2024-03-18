@@ -1,17 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-import { userAssembler } from "../../../assembler";
+import { jwtTokenGeneratorAssembler, userAssembler } from "../../../assembler";
 import { IAuthorizationParameters, IPermission } from "../../../types";
 import { loggedUser } from "../../../../core/utils/loggedUser.utils";
 
-const { userRepository, jwtTokenGenerator } = userAssembler();
+const { userRepository } = userAssembler();
+const { jwtTokenGenerator } = jwtTokenGeneratorAssembler();
 
 const permissions: IPermission = {
   ADMIN: {
     user: ["update", "delete", "read"],
+    establishmentCategory: ["read", "create", "update", "delete"],
   },
   USER: {
     user: ["update", "delete", "read"],
     establishment: ["read", "update", "create", "delete"],
+    establishmentCategory: ["read", "create", "update", "delete"],
   },
 };
 
