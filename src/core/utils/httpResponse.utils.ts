@@ -18,7 +18,7 @@ export class HttpResponseUtils {
   static badRequestResponse(): IHttpResponse {
     return {
       status: 400,
-      message: "Ops! Algo de errado aconteceu.",
+      message: "Ops! Algo deu errado aconteceu.",
     };
   }
 
