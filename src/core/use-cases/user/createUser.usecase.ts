@@ -33,7 +33,7 @@ export class CreateUserUseCase
       );
 
       if (userExists) {
-        return HttpResponseUtils.badRequestResponse();
+        return HttpResponseUtils.badRequestResponse('Usuário já existe');
       }
 
       const id = crypto.randomUUID();
