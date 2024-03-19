@@ -26,16 +26,16 @@ export class CreateUserUseCase
     data: ICreateUserUseCaseDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     try {
-      this.fieldsValidatorPort.create(data);
+      const validatedFields = this.fieldsValidatorPort.create(data);
 
       const id = crypto.randomUUID();
-      const hashed_password = await this.passwordHashPort.hash(data.password);
+      const hashedPassword = await this.passwordHashPort.hash(validatedFields.password);
 
       const user_repository_data: ICreateUserRepositoryDataIn = {
-        ...data,
-        password: hashed_password,
+        ...validatedFields,
+        password: hashedPassword,
         id,
-        birthdate: new Date(data.birthdate),
+        birthdate: new Date(validatedFields.birthdate),
       };
 
       const user = await this.userRepositoryPort.create(user_repository_data);

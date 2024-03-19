@@ -1,7 +1,8 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { userAssembler } from "../../../assembler";
 import { APIsAccessControlMiddleware } from "../middlewares";
 import { IRole } from "../../../../core/types";
+import { canManipulateUserMiddleware } from "../middlewares/canManipulateUser.middleware";
 
 export const userRouter = Router();
 
@@ -13,7 +14,7 @@ userRouter.get(
   APIsAccessControlMiddleware.authorization({
     action: "read",
     resource: "user",
-    roles: [IRole.ADMIN, IRole.ESTABLISHMENT, IRole.USER],
+    roles: [IRole.ADMIN, IRole.USER],
   }),
   async (request: Request, response: Response) => {
     if (request.query?.email) {
@@ -36,7 +37,7 @@ userRouter.get(
   APIsAccessControlMiddleware.authorization({
     action: "read",
     resource: "user",
-    roles: [IRole.ADMIN, IRole.ESTABLISHMENT, IRole.USER],
+    roles: [IRole.ADMIN, IRole.USER],
   }),
   async (request: Request, response: Response) => {
     const { id } = request.params;
@@ -63,6 +64,7 @@ userRouter.put(
     resource: "user",
     roles: [IRole.ADMIN, IRole.USER],
   }),
+  canManipulateUserMiddleware,
   async (request: Request, response: Response) => {
     const userData = request.body;
 
@@ -80,8 +82,9 @@ userRouter.delete(
     resource: "user",
     roles: [IRole.ADMIN, IRole.USER],
   }),
+  canManipulateUserMiddleware,
   async (request: Request, response: Response) => {
-    const id = request.body;
+    const { id } = request.body;
 
     const { status, ...data } = await userController.deleteUser(id);
 

@@ -29,6 +29,7 @@ model User {
   addresses              Address[]
   comments               Comment[]
   favoriteEstablishments FavoriteEstablishment[]
+  establishments         Establishment[]
 
   @@map("users")
 }
@@ -36,7 +37,7 @@ model User {
 model EstablishmentCategory {
   id          String   @id
   name        String
-  description String @db.VarChar(500)
+  description String   @db.VarChar(500)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
 
@@ -48,15 +49,15 @@ model EstablishmentCategory {
 model Establishment {
   id                     String                @id
   name                   String
-  email                  String                @unique
-  password               String
   cnpj                   String
   description            String
-  status                 Boolean
+  status                 Boolean               @default(true)
   picture_url            String
   background_picture_url String?
-  category               EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  category               EstablishmentCategory @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   category_id            String
+  user                   User                  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id                String
   created_at             DateTime              @default(now())
   updated_at             DateTime              @default(now()) @updatedAt
 
@@ -72,7 +73,7 @@ model Establishment {
 model EstablishmentContact {
   id               String        @id
   phone_number     String
-  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   establishment_id String
   created_at       DateTime      @default(now())
   updated_at       DateTime      @default(now()) @updatedAt
@@ -82,9 +83,9 @@ model EstablishmentContact {
 
 model EstablishmentWorkingTime {
   id                String        @id
-  opening_time      DateTime      @db.Time()
-  closing_time      DateTime      @db.Time()
-  establishment     Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  opening_time      String
+  closing_time      String
+  establishment     Establishment @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   establishment_id  String        @unique
   open_on_sunday    Boolean
   open_on_monday    Boolean
@@ -92,26 +93,29 @@ model EstablishmentWorkingTime {
   open_on_wednesday Boolean
   open_on_thursday  Boolean
   open_on_friday    Boolean
+  open_on_saturday  Boolean
   created_at        DateTime      @default(now())
   updated_at        DateTime      @default(now()) @updatedAt
 
-  @@map("establishment_working_time")
+  @@map("establishments_working_time")
 }
 
 model Address {
-  id               String        @id
+  id               String         @id
   city             String
   street           String
   number           Int
   neighborhood     String
-  complement       String
+  complement       String?
   zip_code         String
-  user             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user_id          String
-  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  establishment_id String        @unique
-  created_at       DateTime      @default(now())
-  updated_at       DateTime      @default(now()) @updatedAt
+  state            String
+  country          String
+  user             User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id          String?
+  establishment    Establishment? @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  establishment_id String?        @unique
+  created_at       DateTime       @default(now())
+  updated_at       DateTime       @default(now()) @updatedAt
 
   @@map("addresses")
 }
@@ -120,9 +124,9 @@ model Comment {
   id               String        @id
   evaluation_note  Int
   description      String
-  user             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user             User          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id          String
-  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   establishment_id String
   created_at       DateTime      @default(now())
   updated_at       DateTime      @default(now()) @updatedAt
@@ -132,9 +136,9 @@ model Comment {
 
 model FavoriteEstablishment {
   id               String        @id
-  user             User          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user             User          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id          String
-  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   establishment_id String
   created_at       DateTime      @default(now())
   updated_at       DateTime      @default(now()) @updatedAt

@@ -14,9 +14,9 @@ export class DeleteUserUseCase
 
   async execute(id: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      this.fieldsValidatorPort.delete(id);
+      const validatedId = this.fieldsValidatorPort.delete(id);
 
-      const user = await this.userRepositoryPort.delete(id);
+      const user = await this.userRepositoryPort.delete(validatedId);
 
       if (!user) {
         return HttpResponseUtils.badRequestResponse();

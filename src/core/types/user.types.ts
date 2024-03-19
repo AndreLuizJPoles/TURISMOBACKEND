@@ -6,6 +6,7 @@ import { GetAllUsersUseCase } from "../use-cases/user/getAllUsers.usecase";
 import { GetUserByEmailUseCase } from "../use-cases/user/getUserByEmail.usecase";
 import { GetUserByIdUseCase } from "../use-cases/user/getUserById.usecase";
 import { UpdateUserUseCase } from "../use-cases/user/updateUser.usecase";
+import { IRole } from "./role.types";
 
 export type ICreateUserRepositoryDataIn = Omit<
   IUserEntity,
@@ -39,7 +40,7 @@ export interface IUserUseCases {
   loginUser: LoginUserUseCase;
 }
 
-export interface ILoginUseCaseDataIn {
-  email: string;
-  password: string;
+export interface ILoggedUser {
+  user?: IUserEntity;
+  role?: IRole;
 }

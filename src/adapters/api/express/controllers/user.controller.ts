@@ -1,11 +1,11 @@
-import { IUserEntity } from "../../../../../core/entities";
+import { IUserEntity } from "../../../../core/entities";
 import {
   ICreateUserUseCaseDataIn,
   IHttpResponse,
   ILoginUseCaseDataIn,
   IUpdateUserUseCaseDataIn,
   IUserUseCases,
-} from "../../../../../core/types";
+} from "../../../../core/types";
 
 export class UserController {
   constructor(private userUseCases: IUserUseCases) {}

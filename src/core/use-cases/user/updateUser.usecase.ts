@@ -16,9 +16,9 @@ export class UpdateUserUseCase
     data: IUpdateUserUseCaseDataIn
   ): Promise<IHttpResponse<IUserEntity>> {
     try {
-      this.fieldsValidatorPort.update(data);
+      const validatedFields = this.fieldsValidatorPort.update(data);
 
-      const { id, ...userDataIn } = data;
+      const { id, ...userDataIn } = validatedFields;
 
       const userData = userDataIn;
 
