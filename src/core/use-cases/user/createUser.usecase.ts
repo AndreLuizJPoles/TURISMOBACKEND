@@ -50,10 +50,6 @@ export class CreateUserUseCase
 
       const user = await this.userRepositoryPort.create(user_repository_data);
 
-      if (!user) {
-        return HttpResponseUtils.badRequestResponse();
-      }
-
       const userDataFormatted = excludeFields(["password"], user);
 
       return HttpResponseUtils.createdResponse(userDataFormatted);
