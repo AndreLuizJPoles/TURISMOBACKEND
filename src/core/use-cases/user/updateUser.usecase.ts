@@ -20,6 +20,12 @@ export class UpdateUserUseCase
 
       const { id, ...userDataIn } = validatedFields;
 
+      const userExists = await this.userRepositoryPort.getById(id);
+
+      if (!userExists) {
+        return HttpResponseUtils.notFoundResponse();
+      }
+
       const userData = userDataIn;
 
       if (userData.birthdate) {
@@ -27,10 +33,6 @@ export class UpdateUserUseCase
       }
 
       const user = await this.userRepositoryPort.update(id, userData);
-
-      if (!user) {
-        return HttpResponseUtils.badRequestResponse();
-      }
 
       const userDataFormatted = excludeFields(["password"], user);
 

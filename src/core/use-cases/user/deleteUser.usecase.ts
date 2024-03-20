@@ -16,11 +16,13 @@ export class DeleteUserUseCase
     try {
       const validatedId = this.fieldsValidatorPort.delete(id);
 
-      const user = await this.userRepositoryPort.delete(validatedId);
+      const userExists = await this.userRepositoryPort.getById(validatedId);
 
-      if (!user) {
-        return HttpResponseUtils.badRequestResponse();
+      if (!userExists) {
+        return HttpResponseUtils.notFoundResponse();
       }
+
+      const user = await this.userRepositoryPort.delete(validatedId);
 
       const userDataFormatted = excludeFields(["password"], user);
 

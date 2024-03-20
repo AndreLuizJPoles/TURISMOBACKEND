@@ -19,11 +19,16 @@ export class DeleteEstablishmentUseCase
     try {
       const validatedId = this.fieldsValidatorPort.delete(id);
 
-      const establishment = await this.establishmentRepositoryPort.delete(validatedId);
+      const establishmentExists =
+        await this.establishmentRepositoryPort.getById(validatedId);
 
-      if (!establishment) {
+      if (!establishmentExists) {
         return HttpResponseUtils.notFoundResponse();
       }
+
+      const establishment = await this.establishmentRepositoryPort.delete(
+        validatedId
+      );
 
       return HttpResponseUtils.okResponse(establishment);
     } catch (error: any) {

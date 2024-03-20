@@ -25,16 +25,20 @@ export class UpdateEstablishmentUseCase
     try {
       const validatedFields = this.fieldsValidatorPort.update(data);
 
-      const { address, workingTime, id, ...establishmentData } = validatedFields;
+      const { address, workingTime, id, ...establishmentData } =
+        validatedFields;
+
+      const establishmentExists =
+        await this.establishmentRepositoryPort.getById(id);
+
+      if (!establishmentExists) {
+        return HttpResponseUtils.notFoundResponse();
+      }
 
       const establishment = await this.establishmentRepositoryPort.update(
         id,
         establishmentData
       );
-
-      if (!establishment) {
-        return HttpResponseUtils.badRequestResponse();
-      }
 
       if (address) {
         const { id, ...addressData } = address;
