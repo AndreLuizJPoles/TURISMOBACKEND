@@ -8,7 +8,7 @@
     "paths": {
         "/users": {
             "post": {
-                "summary": "Cadastro de usuário",
+                "summary": "Cadastro de Usuário",
                 "description": "Essa rota é responsável pelo cadastro de novos usuários na aplicação.",
                 "tags": [
                     "Users"
@@ -75,7 +75,7 @@
                 }
             },
             "get": {
-                "summary": "Listagem de usuários",
+                "summary": "Listagem de Usuários",
                 "description": "Essa rota é responsável pelo listagem usuários na aplicação.",
                 "tags": [
                     "Users"
@@ -133,7 +133,7 @@
                 }
             },
             "put": {
-                "summary": "Edição de usuário",
+                "summary": "Edição de Usuário",
                 "description": "Essa rota é responsável pela edição de usuário.",
                 "tags": [
                     "Users"
@@ -218,7 +218,7 @@
                 }
             },
             "delete": {
-                "summary": "Deleção de usuário",
+                "summary": "Deleção de Usuário",
                 "description": "Essa rota é responsável pela deleção de usuário.",
                 "tags": [
                     "Users"
@@ -307,7 +307,7 @@
         },
         "users/{userId}": {
             "get": {
-                "summary": "Listagem de usuário pelo ID",
+                "summary": "Listagem de Usuário pelo ID",
                 "description": "Essa rota é responsável pelo listagem de um usuário específico através de seu ID na aplicação.",
                 "tags": [
                     "Users"
@@ -372,7 +372,7 @@
         },
         "users/login": {
             "post": {
-                "summary": "Login de usuário",
+                "summary": "Login de Usuário",
                 "description": "Essa rota é responsável pelo login de usuários.",
                 "tags": [
                     "Users"
@@ -460,7 +460,7 @@
         },
         "/establishments": {
             "post": {
-                "summary": "Cadastro de estabelecimento",
+                "summary": "Cadastro de Estabelecimento",
                 "description": "Essa rota é responsável pelo cadastro de estabelecimento na aplicação.",
                 "tags": [
                     "Establishments"
@@ -607,7 +607,7 @@
                 }
             },
             "put": {
-                "summary": "Edição de estabelecimento",
+                "summary": "Edição de Estabelecimento",
                 "description": "Essa rota é responsável pela edição de estabelecimento na aplicação.",
                 "tags": [
                     "Establishments"
@@ -715,7 +715,7 @@
                 }
             },
             "delete": {
-                "summary": "Deleção de estabelecimento",
+                "summary": "Deleção de Estabelecimento",
                 "description": "Essa rota é responsável pela deleção de estabelecimento.",
                 "tags": [
                     "Establishments"
@@ -804,7 +804,7 @@
         },
         "establishments/{establishmentId}": {
             "get": {
-                "summary": "Listagem de estabelecimento pelo ID",
+                "summary": "Listagem de Estabelecimento pelo ID",
                 "description": "Essa rota é responsável pelo listagem de um estabelecimento específico através de seu ID na aplicação.",
                 "tags": [
                     "Establishments"
@@ -831,6 +831,341 @@
                                         "data": {
                                             "type": "object",
                                             "$ref": "#/components/schemas/EstablishmentResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/establishmentCategories": {
+            "post": {
+                "summary": "Cadastro de Categoria de Estabelecimento",
+                "description": "Essa rota é responsável pelo cadastro de categoria de estabelecimento na aplicação.",
+                "tags": [
+                    "Establishment Categories"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EstablishmentCategoryCreationInput"
+                            },
+                            "examples": {
+                                "Establishment Category": {
+                                    "value": {
+                                        "name": "Nova Categoria",
+                                        "description": "Nova categoria de exemplo!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentCategoryResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Listagem de Categoria de Estabelecimento",
+                "description": "Essa rota é responsável pela listagem de categorias de estabelecimentos na aplicação.",
+                "tags": [
+                    "Establishment Categories"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/EstablishmentCategoriesArrayResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Edição de Categoria de Estabelecimento",
+                "description": "Essa rota é responsável pela edição de categori estabelecimento na aplicação.",
+                "tags": [
+                    "Establishment Categories"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EstablishmentCategoryUpdateInput"
+                            },
+                            "examples": {
+                                "Establishment": {
+                                    "value": {
+                                        "id": "09fec66e-4201-4201-89f1-ac7e45482355",
+                                        "name": "Outra categoria",
+                                        "description": "Outra categoria de exemplo!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentCategoryResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleção de Categoria de Estabelecimento",
+                "description": "Essa rota é responsável pela deleção de categoria de estabelecimento.",
+                "tags": [
+                    "Establishment Categories"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id"
+                                ]
+                            },
+                            "examples": {
+                                "Establishment Category": {
+                                    "value": {
+                                        "id": "67e60662-78e0-4260-8592-a0796da8e9dc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentCategoryResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "establishmentCategories/{establishmentCategoryId}": {
+            "get": {
+                "summary": "Listagem de Categoria de Estabelecimento pelo ID",
+                "description": "Essa rota é responsável pelo listagem de uma categoria de estabelecimento específica através de seu ID na aplicação.",
+                "tags": [
+                    "Establishment Categories"
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentCategoryResponse"
                                         }
                                     }
                                 }
@@ -1200,6 +1535,69 @@
                         }
                     }
                 }
+            },
+            "EstablishmentCategoryResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EstablishmentCategoriesArrayResponse": {
+                "type": "array",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EstablishmentCategoryResponse"
+                        }
+                    }
+                }
+            },
+            "EstablishmentCategoryCreationInput": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "description"
+                ]
+            },
+            "EstablishmentCategoryUpdateInput": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
             }
         }
     },
