@@ -13,7 +13,7 @@ export class UpdateEstablishmentCategoryUseCase
     IDefaultUseCase<IHttpResponse, IUpdateEstablishmentCategoryUseCaseDataIn>
 {
   constructor(
-    private establishmentCategoryPort: IEstablishmentCategoryRepositoryPort,
+    private establishmentCategoryRepositoryPort: IEstablishmentCategoryRepositoryPort,
     private fieldsValidator: IEstablishmentCategoryFieldsValidationPort
   ) {}
 
@@ -24,14 +24,17 @@ export class UpdateEstablishmentCategoryUseCase
       const { id, ...establishmentCategoryData } =
         this.fieldsValidator.update(data);
 
-      const establishmentCategory = await this.establishmentCategoryPort.update(
+      const establishmentCategoryExists =
+        await this.establishmentCategoryRepositoryPort.getById(id);
+
+      if (establishmentCategoryExists) {
+        return HttpResponseUtils.badRequestResponse("Categoria não sexiste");
+      }
+
+      const establishmentCategory = await this.establishmentCategoryRepositoryPort.update(
         id,
         establishmentCategoryData
       );
-
-      if (!establishmentCategory) {
-        return HttpResponseUtils.badRequestResponse();
-      }
 
       return HttpResponseUtils.okResponse(establishmentCategory);
     } catch (error: any) {

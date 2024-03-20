@@ -13,15 +13,21 @@ export class DeleteEstablishmentCategoryUseCase
     private fieldsValidatorPort: IEstablishmentCategoryFieldsValidationPort
   ) {}
 
-  async execute(id: string): Promise<IHttpResponse<IEstablishmentCategoryEntity>> {
+  async execute(
+    id: string
+  ): Promise<IHttpResponse<IEstablishmentCategoryEntity>> {
     try {
       const validatedId = this.fieldsValidatorPort.delete(id);
 
-      const establishmentCategory = await this.establishmentCategoryRepositoryPort.delete(validatedId);
+      const establishmentCategoryExists =
+        await this.establishmentCategoryRepositoryPort.getById(validatedId);
 
-      if (!establishmentCategory) {
-        return HttpResponseUtils.notFoundResponse();
+      if (establishmentCategoryExists) {
+        return HttpResponseUtils.badRequestResponse("Categoria não sexiste");
       }
+
+      const establishmentCategory =
+        await this.establishmentCategoryRepositoryPort.delete(validatedId);
 
       return HttpResponseUtils.okResponse(establishmentCategory);
     } catch (error: any) {
