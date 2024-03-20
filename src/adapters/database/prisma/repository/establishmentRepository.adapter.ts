@@ -33,6 +33,20 @@ export class EstablishmentRepositoryAdapter
     }
   }
 
+  async getByCNPJ(cnpj: string): Promise<IEstablishmentEntity | null> {
+    try {
+      const establishment = await prismaClient.establishment.findUnique({
+        where: {
+          cnpj,
+        },
+      });
+
+      return establishment;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
   async create(
     data: ICreateEstablishmentRepositoryDataIn
   ): Promise<IEstablishmentEntity> {
