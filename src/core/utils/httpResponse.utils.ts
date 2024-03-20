@@ -15,10 +15,10 @@ export class HttpResponseUtils {
     };
   }
 
-  static badRequestResponse(): IHttpResponse {
+  static badRequestResponse(message?: string): IHttpResponse {
     return {
       status: 400,
-      message: "Ops! Algo de errado aconteceu.",
+      message: `Ops! ${message || "Algo deu errado aconteceu"}.`,
     };
   }
 

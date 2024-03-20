@@ -65,12 +65,6 @@ establishmentCategoryRouter.put(
 
 establishmentCategoryRouter.get(
   "/:id",
-  APIsAccessControlMiddleware.authentication,
-  APIsAccessControlMiddleware.authorization({
-    action: "read",
-    resource: "establishmentCategory",
-    roles: [IRole.ADMIN, IRole.USER],
-  }),
   async (request: Request, response: Response) => {
     const { id } = request.params;
 

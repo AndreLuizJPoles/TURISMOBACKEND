@@ -10,4 +10,6 @@ export interface IEstablishmentRepositoryPort
     IEstablishmentEntity,
     ICreateEstablishmentRepositoryDataIn,
     IUpdateEstablishmentRepositoryDataIn
-  > {}
+  > {
+  getByCNPJ: (cnpj: string) => Promise<IEstablishmentEntity | null>;
+}

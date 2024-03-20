@@ -35,6 +35,17 @@ export class CreateEstablishmentUseCase
 
       const { address, workingTime, ...establishmentData } = validatedFields;
 
+      const establishmentExists =
+        await this.establishmentRepositoryPort.getByCNPJ(
+          establishmentData.cnpj
+        );
+
+      if (establishmentExists) {
+        return HttpResponseUtils.badRequestResponse(
+          "Estabelecimento já existe"
+        );
+      }
+
       const newEstablishmentData: ICreateEstablishmentRepositoryDataIn = {
         ...establishmentData,
         id: randomUUID(),
@@ -44,10 +55,6 @@ export class CreateEstablishmentUseCase
       const establishment = await this.establishmentRepositoryPort.create(
         newEstablishmentData
       );
-
-      if (!establishment) {
-        return HttpResponseUtils.badRequestResponse();
-      }
 
       const addressData: ICreateAddressRepositoryDataIn = {
         ...address,

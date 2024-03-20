@@ -28,8 +28,18 @@ export class CreateUserUseCase
     try {
       const validatedFields = this.fieldsValidatorPort.create(data);
 
+      const userExists = await this.userRepositoryPort.getByEmail(
+        validatedFields.email
+      );
+
+      if (userExists) {
+        return HttpResponseUtils.badRequestResponse('Usuário já existe');
+      }
+
       const id = crypto.randomUUID();
-      const hashedPassword = await this.passwordHashPort.hash(validatedFields.password);
+      const hashedPassword = await this.passwordHashPort.hash(
+        validatedFields.password
+      );
 
       const user_repository_data: ICreateUserRepositoryDataIn = {
         ...validatedFields,
@@ -39,10 +49,6 @@ export class CreateUserUseCase
       };
 
       const user = await this.userRepositoryPort.create(user_repository_data);
-
-      if (!user) {
-        return HttpResponseUtils.badRequestResponse();
-      }
 
       const userDataFormatted = excludeFields(["password"], user);
 

@@ -36,10 +36,6 @@ export class CreateEstablishmentCategoryUseCase
           establishmentCategoryData
         );
 
-      if (!establishmentCategory) {
-        return HttpResponseUtils.badRequestResponse();
-      }
-
       return HttpResponseUtils.okResponse(establishmentCategory);
     } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
