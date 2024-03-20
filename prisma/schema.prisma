@@ -49,7 +49,7 @@ model EstablishmentCategory {
 model Establishment {
   id                     String                @id
   name                   String
-  cnpj                   String
+  cnpj                   String                @unique
   description            String
   status                 Boolean               @default(true)
   picture_url            String
