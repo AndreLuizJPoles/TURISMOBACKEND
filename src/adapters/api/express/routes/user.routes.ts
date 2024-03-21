@@ -1,8 +1,7 @@
 import { Request, Response, Router } from "express";
 import { userAssembler } from "../../../assembler";
-import { APIsAccessControlMiddleware } from "../middlewares";
+import { APIsAccessControlMiddleware, canManipulateUserMiddleware } from "../middlewares";
 import { IRole } from "../../../../core/types";
-import { canManipulateUserMiddleware } from "../middlewares/canManipulateUser.middleware";
 
 export const userRouter = Router();
 

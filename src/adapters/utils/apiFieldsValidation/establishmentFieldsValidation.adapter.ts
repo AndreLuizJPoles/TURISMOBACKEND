@@ -1,7 +1,6 @@
 import { IEstablishmentFieldsValidationPort } from "../../../core/ports";
 import {
   ICreateEstablishmentUseCaseDataIn,
-  ILoginUseCaseDataIn,
   IUpdateEstablishmentUseCaseDataIn,
 } from "../../../core/types";
 import zod from "zod";
