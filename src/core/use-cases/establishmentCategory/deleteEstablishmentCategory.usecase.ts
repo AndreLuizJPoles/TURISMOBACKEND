@@ -17,7 +17,7 @@ export class DeleteEstablishmentCategoryUseCase
     id: string
   ): Promise<IHttpResponse<IEstablishmentCategoryEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.delete(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const establishmentCategoryExists =
         await this.establishmentCategoryRepositoryPort.getById(validatedId);

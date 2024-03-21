@@ -14,7 +14,7 @@ export class GetUserByIdUseCase
 
   async execute(id: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.getById(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const user = await this.userRepositoryPort.getById(validatedId);
 

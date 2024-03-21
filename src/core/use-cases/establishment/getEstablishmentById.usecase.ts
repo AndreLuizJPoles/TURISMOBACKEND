@@ -17,7 +17,7 @@ export class GetEstablishmentByIdUseCase
 
   async execute(id: string): Promise<IHttpResponse<IEstablishmentEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.getById(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const establishment = await this.establishmentRepositoryPort.getById(validatedId);
 

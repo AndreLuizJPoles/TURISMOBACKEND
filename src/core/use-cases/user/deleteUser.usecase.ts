@@ -14,7 +14,7 @@ export class DeleteUserUseCase
 
   async execute(id: string): Promise<IHttpResponse<IUserEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.delete(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const userExists = await this.userRepositoryPort.getById(validatedId);
 

@@ -55,19 +55,10 @@ export class EstablishmentCategoryAPIFieldsValidationAdapter
     return parsedEstablishmentCategorySchema;
   }
 
-  getById(id: string): string {
-    const establishmentCategorySchema = zod.string().uuid({
-      message: "Informe uma categoria válida.",
-    });
-
-    const parsedEstablishmentCategorySchema =
-      establishmentCategorySchema.parse(id);
-
-    return parsedEstablishmentCategorySchema;
-  }
-
-  delete(id: string): string {
-    const establishmentCategorySchema = zod.string().uuid({
+  validateById(id: string): string {
+    const establishmentCategorySchema = zod.string({
+      required_error: "Informe uma categoria."
+    }).uuid({
       message: "Informe uma categoria válida.",
     });
 
