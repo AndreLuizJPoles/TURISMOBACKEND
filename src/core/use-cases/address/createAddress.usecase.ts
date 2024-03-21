@@ -36,7 +36,7 @@ export class CreateAddressUseCase
 
       if (establishmentAddress) {
         return HttpResponseUtils.badRequestResponse(
-          "O estabelecimento não pode ter mais de um endereço."
+          "O estabelecimento não pode ter mais de um endereço"
         );
       }
 

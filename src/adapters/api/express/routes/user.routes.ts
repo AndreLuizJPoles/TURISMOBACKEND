@@ -9,12 +9,6 @@ const { userController } = userAssembler();
 
 userRouter.get(
   "/",
-  APIsAccessControlMiddleware.authentication,
-  APIsAccessControlMiddleware.authorization({
-    action: "read",
-    resource: "user",
-    roles: [IRole.ADMIN, IRole.USER],
-  }),
   async (request: Request, response: Response) => {
     if (request.query?.email) {
       const email = request.query.email as string;

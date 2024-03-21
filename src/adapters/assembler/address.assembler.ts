@@ -1,5 +1,11 @@
 import { IAddressUseCases } from "../../core/types";
-import { CreateAddressUseCase } from "../../core/use-cases/address";
+import {
+  CreateAddressUseCase,
+  DeleteAddressUseCase,
+  GetAddressByIdUseCase,
+  GetAllAddressesUseCase,
+  UpdateAddressUseCase,
+} from "../../core/use-cases/address";
 import { AddressController } from "../api/express/controllers/address.controller";
 import { AddressRepositoryAdapter } from "../database/prisma";
 import { IAddressAssembler } from "../types/address.types";
@@ -15,6 +21,16 @@ export const addressAssembler = (): IAddressAssembler => {
       addressRepository,
       addressFieldsValidator
     ),
+    deleteAddress: new DeleteAddressUseCase(
+      addressRepository,
+      addressFieldsValidator
+    ),
+    getAllAddresses: new GetAllAddressesUseCase(addressRepository),
+    updateAddress: new UpdateAddressUseCase(
+      addressRepository,
+      addressFieldsValidator
+    ),
+    getAddressById: new GetAddressByIdUseCase(addressRepository, addressFieldsValidator)
   };
 
   const addressController = new AddressController(addressUseCases);
