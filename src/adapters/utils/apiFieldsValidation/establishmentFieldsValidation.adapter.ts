@@ -1,7 +1,6 @@
 import { IEstablishmentFieldsValidationPort } from "../../../core/ports";
 import {
   ICreateEstablishmentUseCaseDataIn,
-  ILoginUseCaseDataIn,
   IUpdateEstablishmentUseCaseDataIn,
 } from "../../../core/types";
 import zod from "zod";
@@ -280,22 +279,10 @@ export class EstablishmentAPIFieldsValidationAdapter
     return parsedEstablishmentSchema;
   }
 
-  getById(id: string): string {
+  validateById(id: string): string {
     const establishmentSchema = zod
       .string({
-        required_error: "Informe estabelecimento a ser buscado.",
-      })
-      .uuid("O ID informado não é válido.");
-
-    const parsedEstablishmentSchema = establishmentSchema.parse(id);
-
-    return parsedEstablishmentSchema;
-  }
-
-  delete(id: string): string {
-    const establishmentSchema = zod
-      .string({
-        required_error: "Informe estabelecimento a ser deletado.",
+        required_error: "Informe um estabelecimento."
       })
       .uuid("O ID informado não é válido.");
 

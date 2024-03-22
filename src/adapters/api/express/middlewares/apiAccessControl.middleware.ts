@@ -10,11 +10,13 @@ const permissions: IPermission = {
   ADMIN: {
     user: ["update", "delete", "read"],
     establishmentCategory: ["read", "create", "update", "delete"],
+    address: ['read']
   },
   USER: {
     user: ["update", "delete", "read"],
     establishment: ["read", "update", "create", "delete"],
     establishmentCategory: ["read"],
+    address: ['read', 'update', 'create', 'delete']
   },
 };
 

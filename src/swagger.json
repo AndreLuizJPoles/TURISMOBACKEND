@@ -34,19 +34,8 @@
                     }
                 },
                 "responses": {
-                    "400": {
-                        "description": "Usuário já existe",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Criado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -57,6 +46,17 @@
                                             "$ref": "#/components/schemas/UserResponse"
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário já existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -86,13 +86,13 @@
                     }
                 ],
                 "responses": {
-                    "404": {
-                        "description": "Dados não encontrados",
+                    "200": {
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "$ref": "#/components/schemas/UsersArrayResponse"
                                 }
                             }
                         }
@@ -108,13 +108,13 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "OK",
+                    "404": {
+                        "description": "Dados não encontrados",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/UsersArrayResponse"
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -165,20 +165,25 @@
                         }
                     }
                 },
-                "responses": {
-                    "401": {
-                        "description": "Não autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                "200": {
+                    "description": "OK",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "data": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/UserResponse"
+                                    }
                                 }
                             }
                         }
-                    },
-                    "500": {
-                        "description": "Erro interno",
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -199,18 +204,13 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "OK",
+                    "500": {
+                        "description": "Erro interno",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "$ref": "#/components/schemas/UserResponse"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -253,8 +253,35 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/UserResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -274,38 +301,11 @@
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Dados não encontrados",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "$ref": "#/components/schemas/UserResponse"
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }
         },
-        "users/{userId}": {
+        "/users/{userId}": {
             "get": {
                 "summary": "Listagem de Usuário pelo ID",
                 "description": "Essa rota é responsável pelo listagem de um usuário específico através de seu ID na aplicação.",
@@ -318,13 +318,18 @@
                     }
                 ],
                 "responses": {
-                    "404": {
-                        "description": "Dados não encontrados",
+                    "200": {
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/UserResponse"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -340,18 +345,13 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "OK",
+                    "404": {
+                        "description": "Dados não encontrados",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "$ref": "#/components/schemas/UserResponse"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -407,19 +407,23 @@
                     }
                 },
                 "responses": {
-                    "401": {
-                        "description": "Não autorizado",
+                    "200": {
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
                                 }
                             }
                         }
                     },
-                    "500": {
-                        "description": "Erro interno",
+                    "401": {
+                        "description": "Não autorizado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -440,17 +444,13 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "OK",
+                    "500": {
+                        "description": "Erro interno",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -513,8 +513,8 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Criado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -571,17 +571,6 @@
                     "Establishments"
                 ],
                 "responses": {
-                    "404": {
-                        "description": "Dados não encontrados",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -589,6 +578,17 @@
                                 "schema": {
                                     "type": "object",
                                     "$ref": "#/components/schemas/EstablishmentsArrayResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -663,19 +663,24 @@
                     }
                 },
                 "responses": {
-                    "401": {
-                        "description": "Não autorizado",
+                    "200": {
+                        "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentResponse"
+                                        }
+                                    }
                                 }
                             }
                         }
                     },
-                    "500": {
-                        "description": "Erro interno",
+                    "401": {
+                        "description": "Não autorizado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -696,18 +701,13 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "OK",
+                    "500": {
+                        "description": "Erro interno",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "$ref": "#/components/schemas/EstablishmentResponse"
-                                        }
-                                    }
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -750,8 +750,35 @@
                     }
                 },
                 "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -771,38 +798,11 @@
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Dados não encontrados",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "$ref": "#/components/schemas/EstablishmentResponse"
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }
         },
-        "establishments/{establishmentId}": {
+        "/establishments/{establishmentId}": {
             "get": {
                 "summary": "Listagem de Estabelecimento pelo ID",
                 "description": "Essa rota é responsável pelo listagem de um estabelecimento específico através de seu ID na aplicação.",
@@ -810,17 +810,6 @@
                     "Establishments"
                 ],
                 "responses": {
-                    "404": {
-                        "description": "Dados não encontrados",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -833,6 +822,17 @@
                                             "$ref": "#/components/schemas/EstablishmentResponse"
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -881,8 +881,8 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Criado",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -933,17 +933,6 @@
                     }
                 ],
                 "responses": {
-                    "404": {
-                        "description": "Dados não encontrados",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -951,6 +940,17 @@
                                 "schema": {
                                     "type": "object",
                                     "$ref": "#/components/schemas/EstablishmentCategoriesArrayResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -970,7 +970,7 @@
             },
             "put": {
                 "summary": "Edição de Categoria de Estabelecimento",
-                "description": "Essa rota é responsável pela edição de categori estabelecimento na aplicação.",
+                "description": "Essa rota é responsável pela edição de categoria estabelecimento na aplicação.",
                 "tags": [
                     "Establishment Categories"
                 ],
@@ -1137,7 +1137,7 @@
                 }
             }
         },
-        "establishmentCategories/{establishmentCategoryId}": {
+        "/establishmentCategories/{establishmentCategoryId}": {
             "get": {
                 "summary": "Listagem de Categoria de Estabelecimento pelo ID",
                 "description": "Essa rota é responsável pelo listagem de uma categoria de estabelecimento específica através de seu ID na aplicação.",
@@ -1145,17 +1145,6 @@
                     "Establishment Categories"
                 ],
                 "responses": {
-                    "404": {
-                        "description": "Dados não encontrados",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "content": {
@@ -1168,6 +1157,376 @@
                                             "$ref": "#/components/schemas/EstablishmentCategoryResponse"
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/addresses": {
+            "post": {
+                "summary": "Cadastro de endereço para usuários e estabelecimentos",
+                "description": "Essa rota é responsável pela criação de endereços para estabelecimento e usuários.",
+                "tags": [
+                    "Addresses"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressCreationInput"
+                            },
+                            "examples": {
+                                "Address": {
+                                    "value": {
+                                        "city": "Cidade Exemplo",
+                                        "street": "Rua da Amostra",
+                                        "number": 123,
+                                        "neighborhood": "Bairro da Demonstração",
+                                        "complement": "Bloco A, Apartamento 101",
+                                        "zip_code": "12345-678",
+                                        "state": "Estado do Exemplo",
+                                        "country": "País das Amostras",
+                                        "user_id": "",
+                                        "establishment_id": "123456789"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/AddressResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "É permitido apenas um endereço por cadastro.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Listagem de Endereços",
+                "description": "Essa rota é responsável pela listagem de endereços de estabelecimentos e usuários na aplicação.",
+                "tags": [
+                    "Addresses"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/AddressesArrayResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Edição de Endereço",
+                "description": "Essa rota é responsável pela edição de endereço de estabelecimento e usuário na aplicação.",
+                "tags": [
+                    "Addresses"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressUpdateInput"
+                            },
+                            "examples": {
+                                "Establishment": {
+                                    "value": {
+                                        "city": "Metropolis",
+                                        "street": "Main Street",
+                                        "number": "456",
+                                        "neighborhood": "Downtown",
+                                        "complement": "Suite 101",
+                                        "zip_code": "54321-098",
+                                        "state": "Capital State",
+                                        "country": "Example Country"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/AddressResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleção de Endereço",
+                "description": "Essa rota é responsável pela deleção de endereço de estabelecimento e de usuário.",
+                "tags": [
+                    "Addresses"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id"
+                                ]
+                            },
+                            "examples": {
+                                "Address": {
+                                    "value": {
+                                        "id": "67e60662-78e0-4260-8592-a0796da8e9dc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/AddressResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/addresses/{addressId}": {
+            "get": {
+                "summary": "Listagem de Endereço pelo ID",
+                "description": "Essa rota é responsável pelo listagem de um endereço de estabelecimento e usuário específico através de seu ID na aplicação.",
+                "tags": [
+                    "Addresses"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/AddressResponse"  
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -1598,6 +1957,135 @@
                 "required": [
                     "id"
                 ]
+            },
+            "AddressResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "street": {
+                        "type": "string"
+                    },
+                    "number": {
+                        "type": "number"
+                    },
+                    "neighborhood": {
+                        "type": "string"
+                    },
+                    "complement": {
+                        "type": "string"
+                    },
+                    "zip_code": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "establishment_id": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AddressCreationInput": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string"
+                    },
+                    "street": {
+                        "type": "string"
+                    },
+                    "number": {
+                        "type": "number"
+                    },
+                    "neighborhood": {
+                        "type": "string"
+                    },
+                    "complement": {
+                        "type": "string"
+                    },
+                    "zip_code": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "establishment_id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "city",
+                    "street",
+                    "number",
+                    "neighborhood",
+                    "complement",
+                    "zip_code",
+                    "state",
+                    "country"
+                ]
+            },
+            "AddressUpdateInput": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string"
+                    },
+                    "street": {
+                        "type": "string"
+                    },
+                    "number": {
+                        "type": "number"
+                    },
+                    "neighborhood": {
+                        "type": "string"
+                    },
+                    "complement": {
+                        "type": "string"
+                    },
+                    "zip_code": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AddressesArrayResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AddressResponse"
+                        }
+                    }
+                }
             }
         }
     },

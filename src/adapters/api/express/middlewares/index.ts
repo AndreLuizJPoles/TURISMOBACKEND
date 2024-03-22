@@ -1,2 +1,5 @@
 export * from "./apiAccessControl.middleware";
 export * from "./canManipulateEstablishment.middleware";
+export * from "./canCreateAddress.middleware";
+export * from "./canManipulateUser.middleware";
+export * from "./canManipulateAddress.middleware";

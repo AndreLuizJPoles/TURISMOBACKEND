@@ -17,7 +17,7 @@ export class GetEstablishmentCategoryByIdUseCase
     id: string
   ): Promise<IHttpResponse<IEstablishmentCategoryEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.getById(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const establishmentCategory =
         await this.establishmentCategoryRepositoryPort.getById(validatedId);
