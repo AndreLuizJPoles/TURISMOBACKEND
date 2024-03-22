@@ -9,18 +9,6 @@ import {
 export class UserAPIFieldsValidationAdapter
   implements IUserFieldsValidationPort
 {
-  delete(id: string): string {
-    const userSchema = zod
-      .string({
-        required_error: "Informe o usuário a ser atualizado.",
-      })
-      .uuid("O ID informado não é válido.");
-
-    const parsedUserSchema = userSchema.parse(id);
-
-    return parsedUserSchema;
-  }
-
   getByEmail(email: string): string {
     const userSchema = zod
       .string({
@@ -33,10 +21,10 @@ export class UserAPIFieldsValidationAdapter
     return parsedUserSchema;
   }
 
-  getById(id: string): string {
+  validateById(id: string): string {
     const userSchema = zod
       .string({
-        required_error: "Informe o usuário a ser buscado.",
+        required_error: "Informe um usuário.",
       })
       .uuid("O ID informado não é válido.");
 
@@ -95,6 +83,7 @@ export class UserAPIFieldsValidationAdapter
 
     return parsedUserSchema;
   }
+
   update(data: IUpdateUserUseCaseDataIn): IUpdateUserUseCaseDataIn {
     const userData = data;
 

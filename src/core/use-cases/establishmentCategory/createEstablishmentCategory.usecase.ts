@@ -36,7 +36,7 @@ export class CreateEstablishmentCategoryUseCase
           establishmentCategoryData
         );
 
-      return HttpResponseUtils.okResponse(establishmentCategory);
+      return HttpResponseUtils.createdResponse(establishmentCategory);
     } catch (error: any) {
       return HttpResponseUtils.internalServerErrorResponse(error);
     }

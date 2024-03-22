@@ -1,8 +1,7 @@
 import { Request, Response, Router } from "express";
 import { userAssembler } from "../../../assembler";
-import { APIsAccessControlMiddleware } from "../middlewares";
+import { APIsAccessControlMiddleware, canManipulateUserMiddleware } from "../middlewares";
 import { IRole } from "../../../../core/types";
-import { canManipulateUserMiddleware } from "../middlewares/canManipulateUser.middleware";
 
 export const userRouter = Router();
 
@@ -10,12 +9,6 @@ const { userController } = userAssembler();
 
 userRouter.get(
   "/",
-  APIsAccessControlMiddleware.authentication,
-  APIsAccessControlMiddleware.authorization({
-    action: "read",
-    resource: "user",
-    roles: [IRole.ADMIN, IRole.USER],
-  }),
   async (request: Request, response: Response) => {
     if (request.query?.email) {
       const email = request.query.email as string;

@@ -1,4 +1,11 @@
-import { IAddressEntity } from "../entities";
+import { IAddressEntity, IEstablishmentEntity } from "../entities";
+import {
+  CreateAddressUseCase,
+  DeleteAddressUseCase,
+  GetAddressByIdUseCase,
+  GetAllAddressesUseCase,
+  UpdateAddressUseCase,
+} from "../use-cases/address";
 
 export type ICreateAddressRepositoryDataIn = Omit<
   IAddressEntity,
@@ -15,4 +22,16 @@ export interface ICreateAddressUseCaseDataIn
 export interface IUpdateAddressUseCaseDataIn
   extends Partial<IUpdateAddressRepositoryDataIn> {
   id: string;
+}
+
+export interface IAddressEstablishment extends IAddressEntity {
+  establishment: IEstablishmentEntity | null;
+}
+
+export interface IAddressUseCases {
+  createAddress: CreateAddressUseCase;
+  getAllAddresses: GetAllAddressesUseCase;
+  updateAddress: UpdateAddressUseCase;
+  deleteAddress: DeleteAddressUseCase;
+  getAddressById: GetAddressByIdUseCase;
 }

@@ -4,6 +4,5 @@ export interface IDefaultFieldsValidationPort<
 > {
   create: (data: CreatePayloadDataIn) => CreatePayloadDataIn;
   update: (data: UpdatePayloadDataIn) => UpdatePayloadDataIn;
-  getById: (id: string) => string;
-  delete: (id: string) => string;
+  validateById: (id: string) => string;
 }

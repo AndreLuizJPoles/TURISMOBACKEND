@@ -20,7 +20,7 @@ model User {
   created_at   DateTime    @default(now())
   updated_at   DateTime    @default(now()) @updatedAt
 
-  addresses              Address[]
+  addresses              Address?
   comments               Comment[]
   favoriteEstablishments FavoriteEstablishment[]
   establishments         Establishment[]
@@ -106,7 +106,7 @@ model Address {
   state            String
   country          String
   user             User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user_id          String?
+  user_id          String?        @unique
   establishment    Establishment? @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   establishment_id String?        @unique
   created_at       DateTime       @default(now())
