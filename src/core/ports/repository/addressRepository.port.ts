@@ -16,5 +16,5 @@ export interface IAddressRepositoryPort
   getByEstablishmentId: (
     establishment_id: string
   ) => Promise<IAddressEstablishment | null>;
-  getByUserId: (user_id: string) => Promise<IAddressEntity[]>;
+  getByUserId: (user_id: string) => Promise<IAddressEntity | null>;
 }

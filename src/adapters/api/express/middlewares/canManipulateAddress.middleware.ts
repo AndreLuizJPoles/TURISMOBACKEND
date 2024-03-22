@@ -16,9 +16,6 @@ export const canManipulateAddressMiddleware = async (
     address?.establishment_id!
   ) : null
 
-  console.log(address)
-  console.log(establishment)
-
   if (
     establishment?.user_id === loggedUser.user?.id ||
     address?.user_id === loggedUser.user?.id

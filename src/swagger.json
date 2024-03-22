@@ -1241,7 +1241,7 @@
                         }
                     },
                     "400": {
-                        "description": "O estabelecimento não pode ter mais de um endereço",
+                        "description": "É permitido apenas um endereço por cadastro.",
                         "content": {
                             "application/json": {
                                 "schema": {

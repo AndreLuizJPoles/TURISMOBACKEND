@@ -109,9 +109,9 @@ export class AddressRepositoryAdapter implements IAddressRepositoryPort {
     }
   }
 
-  async getByUserId(user_id: string): Promise<IAddressEntity[]> {
+  async getByUserId(user_id: string): Promise<IAddressEntity | null> {
     try {
-      const address = await prismaClient.address.findMany({
+      const address = await prismaClient.address.findUnique({
         where: {
           user_id,
         },

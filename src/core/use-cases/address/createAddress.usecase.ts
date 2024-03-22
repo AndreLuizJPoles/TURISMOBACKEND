@@ -26,7 +26,7 @@ export class CreateAddressUseCase
     try {
       const validatedFields = this.fieldsValidator.create(data);
 
-      const { establishment_id } = validatedFields;
+      const { establishment_id, user_id } = validatedFields;
 
       const establishmentAddress = establishment_id
         ? await this.addressRepositoryPort.getByEstablishmentId(
@@ -34,9 +34,13 @@ export class CreateAddressUseCase
           )
         : null;
 
-      if (establishmentAddress) {
+      const userAddress = user_id
+        ? await this.addressRepositoryPort.getByUserId(user_id)
+        : null;
+
+      if (establishmentAddress || userAddress) {
         return HttpResponseUtils.badRequestResponse(
-          "O estabelecimento não pode ter mais de um endereço"
+          "É permitido apenas um endereço por cadastro"
         );
       }
 
