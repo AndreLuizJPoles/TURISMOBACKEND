@@ -9,7 +9,7 @@ import {
 import { EstablishmentCategoryController } from "../api/express/controllers";
 import { EstablishmentCategoryRepositoryAdapter } from "../database/prisma";
 import { IEstablishmentCategoryAssembler } from "../types/establishmentCategory.types";
-import { EstablishmentCategoryAPIFieldsValidationAdapter } from "../utils/apiFieldsValidation/establishmentCategoryFieldsValidation.adapter";
+import { EstablishmentCategoryAPIFieldsValidationAdapter } from "../utils";
 
 export const establishmentCategoryAssembler =
   (): IEstablishmentCategoryAssembler => {
