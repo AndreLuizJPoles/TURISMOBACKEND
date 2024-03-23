@@ -66,8 +66,8 @@ model Establishment {
 
 model EstablishmentContact {
   id               String        @id
-  phone_number     String
-  email            String
+  phone_number     String?
+  email            String?
   establishment    Establishment @relation(fields: [establishment_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   establishment_id String
   created_at       DateTime      @default(now())

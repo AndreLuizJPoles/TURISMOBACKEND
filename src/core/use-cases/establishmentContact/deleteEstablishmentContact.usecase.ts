@@ -17,7 +17,7 @@ export class DeleteEstablishmentContactUseCase
 
   async execute(id: string): Promise<IHttpResponse<IEstablishmentContactEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.delete(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const establishmentContactExists =
         await this.establishmentContactRepositoryPort.getById(validatedId);

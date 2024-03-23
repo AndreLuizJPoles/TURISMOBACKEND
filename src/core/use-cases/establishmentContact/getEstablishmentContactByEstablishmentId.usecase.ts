@@ -4,7 +4,7 @@ import { IHttpResponse } from "../../types";
 import { HttpResponseUtils } from "../../utils";
 import { IDefaultUseCase } from "../default.usecase";
 
-export class GetEstablishmentContactByEstablishmentIdUseCase
+export class GetEstablishmentContactsByEstablishmentIdUseCase
   implements IDefaultUseCase<IHttpResponse, string>
 {
   constructor(
@@ -14,7 +14,7 @@ export class GetEstablishmentContactByEstablishmentIdUseCase
 
   async execute(establishment_id: string): Promise<IHttpResponse<IEstablishmentContactEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.getById(establishment_id);
+      const validatedId = this.fieldsValidatorPort.validateById(establishment_id);
 
       const establishmentContacts = await this.establishmentContactRepositoryPort.getByEstablishmentId(validatedId);
 

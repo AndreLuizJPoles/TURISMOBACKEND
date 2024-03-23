@@ -2,6 +2,7 @@ import { IEstablishmentContactEntity } from "../../../../core/entities";
 import { IEstablishmentContactRepositoryPort } from "../../../../core/ports";
 import {
   ICreateEstablishmentContactRepositoryDataIn,
+  IEstablishmentContactEstablishment,
   IUpdateEstablishmentContactRepositoryDataIn,
 } from "../../../../core/types/establishmentContact.types";
 import { prismaClient } from "../prismaClientConfiguration";
@@ -40,6 +41,25 @@ export class EstablishmentContactRepositoryAdapter
       const contacts = await prismaClient.establishmentContact.findMany({
         where: {
           establishment_id,
+        },
+      });
+
+      return contacts;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async getEstablishmentContactAndEstablishmentById(
+    id: string
+  ): Promise<IEstablishmentContactEstablishment | null> {
+    try {
+      const contacts = await prismaClient.establishmentContact.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          establishment: true,
         },
       });
 

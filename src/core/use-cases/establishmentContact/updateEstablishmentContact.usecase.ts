@@ -26,11 +26,33 @@ export class UpdateEstablishmentContactUseCase
       const { id, ...establishmentContactData } =
         this.fieldsValidatorPort.update(data);
 
+      if (
+        establishmentContactData.email &&
+        establishmentContactData.phone_number
+      ) {
+        return HttpResponseUtils.badRequestResponse(
+          "Atualize apenas o email ou o número de telefone"
+        );
+      }
+
       const establishmentContactExists =
         await this.establishmentContactRepositoryPort.getById(id);
 
       if (!establishmentContactExists) {
         return HttpResponseUtils.notFoundResponse();
+      }
+
+      if (establishmentContactExists.email && !establishmentContactData.email) {
+        return HttpResponseUtils.badRequestResponse("Atualize apenas o email");
+      }
+
+      if (
+        establishmentContactExists.phone_number &&
+        !establishmentContactData.phone_number
+      ) {
+        return HttpResponseUtils.badRequestResponse(
+          "Atualize apenas o número de telefone"
+        );
       }
 
       const establishment =

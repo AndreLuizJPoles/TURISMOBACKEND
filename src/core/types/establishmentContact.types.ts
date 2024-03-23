@@ -1,7 +1,7 @@
-import { IEstablishmentContactEntity } from "../entities";
+import { IEstablishmentContactEntity, IEstablishmentEntity } from "../entities";
 import {
   DeleteEstablishmentContactUseCase,
-  GetEstablishmentContactByEstablishmentIdUseCase,
+  GetEstablishmentContactsByEstablishmentIdUseCase,
   GetEstablishmentContactByIdUseCase,
   UpdateEstablishmentContactUseCase,
 } from "../use-cases/establishmentContact";
@@ -15,11 +15,10 @@ export type IUpdateEstablishmentContactRepositoryDataIn = Partial<
   Omit<ICreateEstablishmentContactRepositoryDataIn, "id" | "establishment_id">
 >;
 
-export interface ICreateEstablishmentContactUseCaseDataIn
-  extends Omit<
-    ICreateEstablishmentContactRepositoryDataIn,
-    "id" | "establishment_id"
-  > {}
+export interface ICreateEstablishmentContactUseCaseDataIn {
+  emails: string[];
+  phone_numbers: string[];
+}
 
 export interface IUpdateEstablishmentContactUseCaseDataIn
   extends IUpdateEstablishmentContactRepositoryDataIn {
@@ -27,8 +26,13 @@ export interface IUpdateEstablishmentContactUseCaseDataIn
 }
 
 export interface IEstablishmentContactUseCases {
-  getEstablishmentContactByEstablishmentId: GetEstablishmentContactByEstablishmentIdUseCase;
+  getEstablishmentContactsByEstablishmentId: GetEstablishmentContactsByEstablishmentIdUseCase;
   getEstablishmentContactById: GetEstablishmentContactByIdUseCase;
   updateEstablishmentContact: UpdateEstablishmentContactUseCase;
   deleteEstablishmentContact: DeleteEstablishmentContactUseCase;
+}
+
+export interface IEstablishmentContactEstablishment
+  extends IEstablishmentContactEntity {
+  establishment: IEstablishmentEntity | null;
 }

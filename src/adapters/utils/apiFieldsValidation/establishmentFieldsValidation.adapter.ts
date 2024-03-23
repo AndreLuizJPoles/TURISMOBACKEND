@@ -151,7 +151,7 @@ export class EstablishmentAPIFieldsValidationAdapter
       ),
       contacts: zod.strictObject(
         {
-          phone_number: zod
+          phone_numbers: zod
             .array(
               zod
                 .string({
@@ -167,7 +167,7 @@ export class EstablishmentAPIFieldsValidationAdapter
             .max(3, {
               message: "Informe no máximo 3 números de telefone.",
             }),
-          email: zod
+          emails: zod
             .array(
               zod
                 .string({

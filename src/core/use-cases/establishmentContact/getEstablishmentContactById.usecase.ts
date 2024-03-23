@@ -19,7 +19,7 @@ export class GetEstablishmentContactByIdUseCase
     id: string
   ): Promise<IHttpResponse<IEstablishmentContactEntity>> {
     try {
-      const validatedId = this.fieldsValidatorPort.getById(id);
+      const validatedId = this.fieldsValidatorPort.validateById(id);
 
       const establishmentContact =
         await this.establishmentContactRepositoryPort.getById(validatedId);

@@ -18,10 +18,10 @@ export class EstablishmentContactController {
     );
   }
 
-  async getEstablishmentContactByEstablishmentId(
+  async getEstablishmentContactsByEstablishmentId(
     establishment_id: string
   ): Promise<IHttpResponse<IEstablishmentContactEntity>> {
-    return this.establishmentContactUseCases.getEstablishmentContactById.execute(
+    return this.establishmentContactUseCases.getEstablishmentContactsByEstablishmentId.execute(
       establishment_id
     );
   }

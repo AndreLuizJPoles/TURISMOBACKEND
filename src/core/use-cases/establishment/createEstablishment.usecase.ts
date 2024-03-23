@@ -2,12 +2,14 @@ import { randomUUID } from "crypto";
 import { IEstablishmentEntity } from "../../entities";
 import {
   IAddressRepositoryPort,
+  IEstablishmentContactRepositoryPort,
   IEstablishmentFieldsValidationPort,
   IEstablishmentRepositoryPort,
   IEstablishmentWorkingTimeRepositoryPort,
 } from "../../ports";
 import {
   ICreateAddressRepositoryDataIn,
+  ICreateEstablishmentContactRepositoryDataIn,
   ICreateEstablishmentRepositoryDataIn,
   ICreateEstablishmentUseCaseDataIn,
   ICreateEstablishmentWorkingTimeRepositoryDataIn,
@@ -24,6 +26,7 @@ export class CreateEstablishmentUseCase
     private establishmentRepositoryPort: IEstablishmentRepositoryPort,
     private addressRepositoryPort: IAddressRepositoryPort,
     private establishmentWorkingTimeRepositoryPort: IEstablishmentWorkingTimeRepositoryPort,
+    private establishmentContactRepositoryPort: IEstablishmentContactRepositoryPort,
     private fieldsValidatorPort: IEstablishmentFieldsValidationPort
   ) {}
 
@@ -33,7 +36,8 @@ export class CreateEstablishmentUseCase
     try {
       const validatedFields = this.fieldsValidatorPort.create(data);
 
-      const { address, workingTime, ...establishmentData } = validatedFields;
+      const { address, workingTime, contacts, ...establishmentData } =
+        validatedFields;
 
       const establishmentExists =
         await this.establishmentRepositoryPort.getByCNPJ(
@@ -67,6 +71,25 @@ export class CreateEstablishmentUseCase
           id: randomUUID(),
           establishment_id: establishment.id,
         };
+
+      const contactData: ICreateEstablishmentContactRepositoryDataIn[] = [];
+
+      contacts.emails.forEach((email) =>
+        contactData.push({
+          id: randomUUID(),
+          establishment_id: establishment.id,
+          email,
+        })
+      );
+      contacts.phone_numbers.forEach((phone_number) =>
+        contactData.push({
+          id: randomUUID(),
+          establishment_id: establishment.id,
+          phone_number,
+        })
+      );
+
+      await this.establishmentContactRepositoryPort.createMany(contactData);
 
       await this.addressRepositoryPort.create(addressData);
 
