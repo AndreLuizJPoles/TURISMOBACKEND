@@ -10,6 +10,7 @@ import {
   ICreateAddressUseCaseDataIn,
   IUpdateAddressUseCaseDataIn,
 } from "./address.types";
+import { ICreateEstablishmentContactUseCaseDataIn } from "./establishmentContact.types";
 import {
   ICreateEstablishmentWorkingTimeUseCaseDataIn,
   IUpdateEstablishmentWorkingTimeUseCaseDataIn,
@@ -34,6 +35,7 @@ export interface ICreateEstablishmentUseCaseDataIn
     ICreateEstablishmentWorkingTimeUseCaseDataIn,
     "establishment_id"
   >;
+  contacts: ICreateEstablishmentContactUseCaseDataIn;
 }
 
 export interface IUpdateEstablishmentUseCaseDataIn

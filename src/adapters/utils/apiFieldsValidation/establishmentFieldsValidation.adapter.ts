@@ -149,6 +149,45 @@ export class EstablishmentAPIFieldsValidationAdapter
             "Os dados de horário de funcionamento não foram informados.",
         }
       ),
+      contacts: zod.strictObject(
+        {
+          phone_numbers: zod
+            .array(
+              zod
+                .string({
+                  required_error: "Informe um número de telefone.",
+                })
+                .min(1, {
+                  message: "Informe um número válido.",
+                }),
+              {
+                required_error: "Informe pelo menos um número de telefone",
+              }
+            )
+            .max(3, {
+              message: "Informe no máximo 3 números de telefone.",
+            }),
+          emails: zod
+            .array(
+              zod
+                .string({
+                  required_error: "Informe um email.",
+                })
+                .email({
+                  message: "Informe um email válido.",
+                }),
+              {
+                required_error: "Informe pelo menos um email.",
+              }
+            )
+            .max(3, {
+              message: "Informe no máximo 3 emails.",
+            }),
+        },
+        {
+          required_error: "Os dados de contatos não foram informados.",
+        }
+      ),
     });
 
     const parsedEstablishmentSchema = establishmentSchema.parse(data);

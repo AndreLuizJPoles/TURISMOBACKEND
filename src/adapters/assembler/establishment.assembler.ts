@@ -14,6 +14,9 @@ import {
 } from "../database/prisma";
 import { IEstablishmentAssembler } from "../types";
 import { EstablishmentAPIFieldsValidationAdapter } from "../utils";
+import { establishmentContactAssembler } from "./establishmentContact.assembler";
+
+const { establishmentContactRepository } = establishmentContactAssembler()
 
 export const establishmentAssembler = (): IEstablishmentAssembler => {
   const establishmentRepository = new EstablishmentRepositoryAdapter();
@@ -28,7 +31,8 @@ export const establishmentAssembler = (): IEstablishmentAssembler => {
       establishmentRepository,
       addressRepository,
       establishmentWorkingTimeRepository,
-      establishmentFieldsValidator
+      establishmentContactRepository,
+      establishmentFieldsValidator,
     ),
     deleteEstablishment: new DeleteEstablishmentUseCase(
       establishmentRepository,

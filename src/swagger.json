@@ -505,6 +505,18 @@
                                             "open_on_saturday": true,
                                             "opening_time": "09:00",
                                             "closing_time": "18:00"
+                                        },
+                                        "contacts": {
+                                            "emails": [
+                                                "email1@gmail.com",
+                                                "email2@gmail.com",
+                                                "email3@gmail.com"
+                                            ],
+                                            "phone_numbers": [
+                                                "15999999999",
+                                                "158888888888",
+                                                "15777777777"
+                                            ]
                                         }
                                     }
                                 }
@@ -1513,9 +1525,281 @@
                                     "properties": {
                                         "data": {
                                             "type": "object",
-                                            "$ref": "#/components/schemas/AddressResponse"  
+                                            "$ref": "#/components/schemas/AddressResponse"
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/establishmentContacts": {
+            "put": {
+                "summary": "Edição de Contatos de Estabelecimento",
+                "description": "Essa rota é responsável pela edição de contatos de estabelecimento na aplicação.",
+                "tags": [
+                    "Establishment Contacts"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EstablishmentContactUpdateInput"
+                            },
+                            "examples": {
+                                "Establishment Contact": {
+                                    "value": {
+                                        "email": "estabelecimento@emailtest.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentContactResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Atualização de campos não autorizada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleção de Contato de Endereço",
+                "description": "Essa rota é responsável pela deleção de contato de um estabelecimento na aplicação.",
+                "tags": [
+                    "Establishment Contacts"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id"
+                                ]
+                            },
+                            "examples": {
+                                "Address": {
+                                    "value": {
+                                        "id": "67e60662-78e0-4260-8592-a0796da8e9dc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentContactResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/establishmentContacts/:id": {
+            "get": {
+                "summary": "Listagem de Contato de Estabelecimento pelo ID",
+                "description": "Essa rota é responsável pelo listagem de um contato de estabelecimento através de seu ID na aplicação.",
+                "tags": [
+                    "Establishment Contacts"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/EstablishmentContactResponse"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Dados não encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/establishmentContacts/establishments/:id": {
+            "get": {
+                "summary": "Listagem de Contatos de um Estabelecimento pelo ID",
+                "description": "Essa rota é responsável pelo listagem de contatos de um estabelecimento através de seu ID na aplicação.",
+                "tags": [
+                    "Establishment Contacts"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/EstablishmentContactArrayResponse"
                                 }
                             }
                         }
@@ -1737,6 +2021,23 @@
                             },
                             "closing_time": {
                                 "type": "string"
+                            }
+                        }
+                    },
+                    "contacts": {
+                        "type": "object",
+                        "properties": {
+                            "emails": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "phone_numbers": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
                             }
                         }
                     }
@@ -2084,6 +2385,51 @@
                         "items": {
                             "$ref": "#/components/schemas/AddressResponse"
                         }
+                    }
+                }
+            },
+            "EstablishmentContactArrayResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EstablishmentContactResponse"
+                        }
+                    }
+                }
+            },
+            "EstablishmentContactResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "establishment_id": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EstablishmentContactUpdateInput": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "type": "string"
                     }
                 }
             }
