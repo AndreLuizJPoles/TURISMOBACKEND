@@ -8,3 +8,4 @@ export * from "./establishmentWorkingTime.types";
 export * from "./generalTypes.types";
 export * from "./establishmentCategory.types";
 export * from "./establishmentContact.types";
+export * from "./favoriteEstablishment.types";

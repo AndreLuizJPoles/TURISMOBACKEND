@@ -9,7 +9,7 @@ export const canManipulateEstablishmentMiddleware = async (
   response: Response,
   next: NextFunction
 ) => {
-  const establishmentId = request.body.id;
+  const establishmentId = request.body.id || request.body.establishment_id;
 
   const establishment = await establishmentRepository.getById(establishmentId);
 
